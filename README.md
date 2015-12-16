@@ -4,6 +4,8 @@
 
 Collection of reference implementation bundlers that convert, package, and deploy notebooks as standalone dashboards.
 
+NOTE: This package provides *Deploy As* / *Download As* options in Jupyter Notebook that are currently redudant with the ones provided by the latest stable *jupyter_dashboards* release. We are in the process of extracting the bundlers out of that extension and will remove this note when they reside here and here alone. See [jupyter-incubator/dashboards#151](https://github.com/jupyter-incubator/dashboards/issues/151) for details.
+
 ## What It Gives You
 
 * *File &rarr; Deploy as &rarr; Local dashboard* menu item to deploy the current notebook as a dashboard within the same Jupyter Notebook server instance.
@@ -12,6 +14,7 @@ Collection of reference implementation bundlers that convert, package, and deplo
 
 * Jupyter Notebook 4.0.x running on Python 3.x or Python 2.7.x
 * jupyter_cms>=0.3.0
+* jupyter_dashboards>=0.3.0
 * Edge Chrome, Firefox, or Safari
 
 ## Install It
