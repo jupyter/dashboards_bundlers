@@ -6,7 +6,7 @@
 # Version of Python to dev/test against
 PYTHON?=python3
 # CMS package to use for dev, expressed as a pip installable
-CMS_PACKAGE?=git+https://github.com/parente/contentmanagement.git@deploy-extension
+CMS_PACKAGE?=git+https://github.com/jupyter-incubator/contentmanagement.git
 # Dashboards package to use for dev, expressed as a pip installable
 DASHBOARDS_PACKAGE?=jupyter_dashboards
 
