@@ -25,6 +25,11 @@ def _install_notebook_extension():
                 'label': 'Local Dashboard',
                 'module_name': 'dashboards_bundlers.local_deploy',
                 'group': 'deploy'
+            },
+            'dashboards_php_download': {
+                'label': 'PHP Dashboard bundle (.zip)',
+                'module_name': 'dashboards_bundlers.php_download',
+                'group': 'download'
             }
         }
     })

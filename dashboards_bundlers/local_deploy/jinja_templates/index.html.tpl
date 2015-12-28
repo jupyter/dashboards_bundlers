@@ -13,8 +13,10 @@
     <script>
         var IPython = {};
         var Urth = window.Urth = window.Urth || {};
+{% block thebe_config %}
         Urth.thebe_url = window.location.origin;
         Urth.tmpnb_mode = false;
+{% endblock %}
         Urth.kernel_name = '{%- if (nb.metadata is defined) and (nb.metadata.kernelspec is defined) and (nb.metadata.kernelspec.name is defined) %}
             {{- nb.metadata.kernelspec.name -}}
         {%- endif -%}' || 'python3';
