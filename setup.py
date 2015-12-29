@@ -36,12 +36,12 @@ def _install_notebook_extension():
 
 class InstallCommand(install):
     def run(self):
-        super(InstallCommand, self).run()
+        install.run(self)
         _install_notebook_extension()
 
 class DevelopCommand(develop):
     def run(self):
-        super(DevelopCommand, self).run()
+        develop.run(self)
         _install_notebook_extension()
 
 setup(
