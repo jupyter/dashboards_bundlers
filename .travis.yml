@@ -6,6 +6,7 @@ python:
     - 3.5
 script:
     - pip install "notebook>=4.0,<5.0"
+    - mkdir -p /home/travis/.jupyter/nbconfig
     - pip install jupyter_dashboards
     - jupyter notebook --generate-config
     - python setup.py sdist
