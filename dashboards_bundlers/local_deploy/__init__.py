@@ -18,8 +18,8 @@ from tornado import escape
 
 # Location of this file
 HERE = os.path.abspath(os.path.dirname(__file__))
-# Absolute path to nbconvert templates
-TEMPLATES_PATH = pjoin(HERE, 'jinja_templates')
+# Absolute path to the default template
+DEFAULT_TEMPLATE_PATH = pjoin(HERE, 'jinja_templates', 'index.html.tpl')
 # Absolute path for dashboard static resources
 STATICS_PATH = pjoin(HERE, 'static')
 
@@ -39,8 +39,17 @@ def bundle(handler, abs_nb_path):
     shutil.rmtree(output_dir, True)
     os.makedirs(output_dir)
 
-    # Bundle it
-    bundle_app(abs_nb_path, output_dir, tools=handler.tools)
+    # Generate the index.html file
+    bundle_index(output_dir, abs_nb_path, DEFAULT_TEMPLATE_PATH)
+
+    # Include frontend files referenced via the jupyter_cms bundle mechanism
+    bundle_file_references(output_dir, abs_nb_path, handler.tools)
+
+    # Include static web assets (e.g., Thebe)
+    bundle_web_static(output_dir)
+
+    # Copy declarative widgets if they were used
+    bundle_declarative_widgets(output_dir, abs_nb_path)
 
     # Redirect the user to the new local app
     bundle_url_path = url_path_join(handler.settings['base_url'],
@@ -51,30 +60,42 @@ def bundle(handler, abs_nb_path):
     )
     handler.redirect(bundle_url_path)
 
-def bundle_app(notebook_fn, output_path, template_fn=None, tools=None):
+def bundle_index(output_path, notebook_fn, template_fn=DEFAULT_TEMPLATE_PATH, index_fn='index.html'):
     '''
-    Converts a notebook into a static web application that uses Thebe to request
-    a kernel from the local Jupyter Notebook server where the notebook 
-    originated. Deposits the application in the output path.
+    Runs nbconvert using the provided template and writes the HTML output as 
+    the given index filename under the output directory.
 
-    :param notebook_fn: Notebook file path
-    :param app_location: Output directory
-    :param template_fn: Template file name
-    :param tools: BundlerTools reference from jupyter_cms, if available
-    :returns:
+    :param output_path: The output path of the dashboard being assembled
+    :param notebook_fn: The absolute path to the notebook file being packaged
+    :param template_fn: The absolute path of the Jinja template for nbconvert
+    :param index_fn: Basename of the file to write to the output_path
     '''
     # Invoke nbconvert to get the HTML
     full_output = create_index_html(notebook_fn, {}, 'html', os.getcwd(), template_fn)
 
-    # Include frontend files referenced via the jupyter_cms bundle mechanism
+    # Write out the index file
+    with open(pjoin(output_path, index_fn), 'wb') as f:
+        f.write(full_output)
+
+def bundle_file_references(output_path, notebook_fn, tools):
+    '''
+    Looks for files references in the notebook in the manner supported by the
+    jupyter_cms.BundlerTools. Adds those files to the output path if found.
+
+    :param output_path: The output path of the dashboard being assembled
+    :param notebook_fn: The absolute path to the notebook file being packaged
+    '''
     if tools is not None:
         referenced_files = tools.get_file_references(notebook_fn, 4)
         tools.copy_filelist(os.path.dirname(notebook_fn), output_path, referenced_files)
 
-    # Write out the index file
-    with open(pjoin(output_path, 'index.html'), 'wb') as f:
-        f.write(full_output)
+def bundle_web_static(output_path):
+    '''
+    Copies all the static web assets needed for the dashboard to run stadalone
+    to the static/ subdir of the output directory.
 
+    :param output_path: The output path of the dashboard being assembled
+    '''
     # Copy static assets for Thebe
     shutil.copytree(STATICS_PATH, pjoin(output_path, 'static'))
 
@@ -110,11 +131,6 @@ def bundle_app(notebook_fn, output_path, template_fn=None, tools=None):
     # Copy entire directories
     for comp_dir in component_dirs:
         shutil.copytree(pjoin(src_components, comp_dir), pjoin(dest_components, comp_dir))
-
-    # Copy declarative widgets if they were used
-    bundle_declarative_widgets(output_path, notebook_fn)
-
-    return output_path
 
 def bundle_declarative_widgets(output_path, notebook_file):
     '''
@@ -173,15 +189,22 @@ def create_index_html(path, env_vars, fmt, cwd, template_fn):
         env_vars = {}
     env_vars['PATH'] = os.environ['PATH']
 
+    # Always search for templates in the default template path as well as the
+    # directory containing the provided template
+    templates = '"{}","{}"'.format(
+        os.path.dirname(template_fn),
+        os.path.dirname(DEFAULT_TEMPLATE_PATH)
+    )
+
     proc = subprocess.Popen([
         'ipython',
         'nbconvert',
         '--log-level',
         'ERROR',
         '--stdout',
-        '--TemplateExporter.template_path=["{}"]'.format(TEMPLATES_PATH),
+        '--TemplateExporter.template_path=[{}]'.format(templates),
         '--template',
-        template_fn if template_fn is not None and os.path.isfile(pjoin(TEMPLATES_PATH, template_fn)) else 'thebe.tpl',
+        os.path.basename(template_fn),
         '--to',
         fmt,
         path

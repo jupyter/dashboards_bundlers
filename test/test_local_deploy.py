@@ -44,7 +44,7 @@ class TestLocalDeploy(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_bundle(self):
-        '''Should bundle and redirect to the application output directory.'''
+        '''Should bundle and redirect to the application output dzirectory.'''
         handler = MockHandler(self.tmp)
         converter.bundle(handler, 'test/resources/no_imports.ipynb')
 
@@ -52,35 +52,32 @@ class TestLocalDeploy(unittest.TestCase):
         self.assertTrue(isdir(output_dir), 'app directory should exist')
         self.assertEqual(handler.last_redirect, '/files/local_dashboards/no_imports/index.html', 
             'redirect to application url')
-        
-    def test_bundle_app(self, notebook_fn='test/resources/no_imports.ipynb', kernel_name='python3'):
-        '''Should write a valid index.html and static directory.'''
-        app_location = converter.bundle_app(notebook_fn, self.tmp)
-        self.assertTrue(isfile(pjoin(app_location, 'index.html')), 'index.html should exist')
-        with open(pjoin(app_location, 'index.html')) as f:
+
+    def test_bundle_index(self):
+        '''Should write a valid index.html.'''
+        converter.bundle_index(self.tmp, 'test/resources/no_imports.ipynb')
+        self.assertTrue(isfile(pjoin(self.tmp, 'index.html')), 'index.html should exist')
+        with open(pjoin(self.tmp, 'index.html')) as f:
             contents = f.read()
             self.assertIn('DOCTYPE', contents, 'should declare a DOCTYPE')
             self.assertIn('data-main="./static/main.js', contents, 'should load main.js script')
             self.assertIn("thebe_url = window.location.origin", contents, 'should use local notebook server for kernels')
             self.assertIn("tmpnb_mode = false", contents, 'should not use tmpnb spawn API')
-            self.assertIn("kernel_name = '%s'" % kernel_name, contents, 'should use correct kernel')
-        # Check path from converter
-        self.assertTrue(isdir(pjoin(app_location, 'static', 'bower_components')), 'bower_components should exist')
-        # Check file from converter
-        self.assertTrue(isfile(pjoin(app_location, 'static', 'main.js')), 'main.js should exist')
-        # Check path from extension source
-        self.assertTrue(isdir(pjoin(app_location, 'static', 'dashboard-common')), 'dashboard-common should exist')
-        return app_location
+            self.assertIn("kernel_name = 'python3'", contents, 'should use correct kernel')
 
-    def test_bundle_app_with_declarative_widgets(self):
-        '''Should write a valid index.html and static directory with decl widgets.'''
-        app_location = self.test_bundle_app('test/resources/env.ipynb', 'python2')
-        # Check path from widgets extension
-        self.assertTrue(isdir(pjoin(app_location, 'static', 'urth_widgets')), 'urth_widgets should exist')
+    def test_bundle_web_static(self):
+        '''Should write a static directory.'''
+        converter.bundle_web_static(self.tmp)
+        # Check path from converter
+        self.assertTrue(isdir(pjoin(self.tmp, 'static', 'bower_components')), 'bower_components should exist')
+        # Check file from converter
+        self.assertTrue(isfile(pjoin(self.tmp, 'static', 'main.js')), 'main.js should exist')
+        # Check path from extension source
+        self.assertTrue(isdir(pjoin(self.tmp, 'static', 'dashboard-common')), 'dashboard-common should exist')
 
     def test_bundle_declarative_widgets(self):
         '''Should write declarative widgets to output.'''
-        converter.bundle_declarative_widgets(self.tmp, 'test/resources/env.ipynb', )
+        converter.bundle_declarative_widgets(self.tmp, 'test/resources/env.ipynb')
         self.assertTrue(exists(pjoin(self.tmp, 'static/urth_widgets')), 'urth_widgets should exist')
         self.assertTrue(exists(pjoin(self.tmp, 'static/urth_components')), 'urth_components should exist')
 
