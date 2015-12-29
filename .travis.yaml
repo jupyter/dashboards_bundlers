@@ -8,7 +8,7 @@ script:
     - pip install "notebook>=4.0,<5.0" nbconvert
     - jupyter notebook --generate-config
     - python setup.py sdist
-    - pip install --no-use-wheel dist/*.tar.gz
+    - pip install --no-use-wheel --no-deps dist/*.tar.gz
     - python -B -m unittest discover -s test
 
 notifications:
