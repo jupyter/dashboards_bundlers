@@ -9,6 +9,7 @@ NOTE: This package provides *Deploy As* / *Download As* options in Jupyter Noteb
 ## What It Gives You
 
 * *File &rarr; Deploy as &rarr; Local dashboard* menu item to deploy the current notebook as a dashboard within the same Jupyter Notebook server instance.
+* *File &rarr; Download as &rarr; PHP Dashboard bundle (.zip)* menu item to download the current notebook as a PHP dashboard web frontend that you can deploy and configure to use your own kernel provider (e.g., tmpnb + kernel gateway).
 
 ## Prerequisites
 
@@ -25,9 +26,18 @@ Restart your Notebook server if you did not have `jupyter_cms` previously instal
 
 ## Use It
 
-Currently, there is only one bundler available in this package. It converts your notebook to a web application and deploys it to your Jupyter Notebook server for local use. To use it:
+Currently, there are two bundlers available in this package. The first converts your notebook to a dashboard web application and deploys it to your Jupyter Notebook server for local use. To use it:
 
 1. Write a notebook.
 2. Define a dashboard layout using the `jupyter_dashboards` extension.
-3. Click *File &rarr; Deploy as &rarr; Local dashboard*.
+3. Click *File &rarr; Deploy as &rarr; Local Dashboard*.
 4. Enjoy your dashboard after the redirect.
+
+The second converts your notebook to a dashboard web application and zips it up with a Dockerfile and Cloud Foundry manifest. To use it:
+
+
+1. Write a notebook.
+2. Define a dashboard layout using the `jupyter_dashboards` extension.
+3. Click *File &rarr; Download as &rarr; PHP Dashboard bundle (.zip)*.
+4. Unzip the download.
+5. Refer to the `README.md` in the unzipped folder for deployment requirements.
