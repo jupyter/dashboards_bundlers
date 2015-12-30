@@ -62,8 +62,10 @@ for more information.
     platforms=['Jupyter Notebook 4.0.x'],
     packages=[
         'dashboards_bundlers',
-        'dashboards_bundlers.local_deploy'
+        'dashboards_bundlers.local_deploy',
+        'dashboards_bundlers.php_download'
     ],
+    include_package_data=True,
     install_requires=['jupyter_cms>=0.3.0'],
     cmdclass={
         'install': InstallCommand,
