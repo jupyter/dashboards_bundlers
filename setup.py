@@ -50,8 +50,8 @@ setup(
     author_email='jupyter@googlegroups.com',
     description='Plugins for jupyter_cms to deploy and download notebooks as dashboard apps',
     long_description = '''
-    This package adds a *Deploy as* menu item that converts the current notebook
-into a static HTML dashboard application and deploys it to a 
+    This package adds a *Deploy as* and *Download as* menu items for bundling 
+notebooks created using jupyter_dashboards as standalone web applications.
 
 See `the project README <https://github.com/jupyter-incubator/dashboards_bundlers>`_
 for more information. 
