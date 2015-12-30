@@ -1,4 +1,4 @@
-[![PyPI version](https://badge.fury.io/py/jupyter_dashboards_bundler.svg)](https://badge.fury.io/py/jupyter_dashboards_bundler) [![Google Group](https://img.shields.io/badge/-Google%20Group-lightgrey.svg)](https://groups.google.com/forum/#!forum/jupyter)
+[![PyPI version](https://badge.fury.io/py/jupyter_dashboards_bundlers.svg)](https://badge.fury.io/py/jupyter_dashboards_bundlers) [![Google Group](https://img.shields.io/badge/-Google%20Group-lightgrey.svg)](https://groups.google.com/forum/#!forum/jupyter)
 
 # Jupyter Dashboards Bundlers
 
