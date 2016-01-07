@@ -18,7 +18,19 @@ Collection of reference implementation bundlers that convert, package, and deplo
 
 ## Install It
 
-`pip install jupyter_dashboards_bundlers`
+```bash
+# install the python package
+pip install jupyter_dashboards_bundlers
+# enable the extension in your ~/.jupyter config
+jupyter dashboards_bundlers activate
+```
+
+## Uninstall It
+
+```bash
+jupyter dashboards_bundlers deactivate
+pip uninstall dashboards_bundlers
+```
 
 ## Use It
 

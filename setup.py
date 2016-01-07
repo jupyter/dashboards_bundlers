@@ -3,10 +3,7 @@
 
 import os
 from setuptools import setup
-from setuptools.command.install import install
-from setuptools.command.develop import develop
 
-from notebook.services.config import ConfigManager
 
 # Get location of this file at runtime
 HERE = os.path.abspath(os.path.dirname(__file__))
@@ -15,34 +12,6 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 VERSION_NS = {}
 with open(os.path.join(HERE, 'dashboards_bundlers/_version.py')) as f:
     exec(f.read(), {}, VERSION_NS)
-
-def _install_notebook_extension():
-    cm = ConfigManager()
-    print('Installing notebook extension')
-    cm.update('notebook', { 
-        'jupyter_cms_bundlers': {
-            'dashboards_local_deploy': {
-                'label': 'Local Dashboard',
-                'module_name': 'dashboards_bundlers.local_deploy',
-                'group': 'deploy'
-            },
-            'dashboards_php_download': {
-                'label': 'PHP Dashboard bundle (.zip)',
-                'module_name': 'dashboards_bundlers.php_download',
-                'group': 'download'
-            }
-        }
-    })
-
-class InstallCommand(install):
-    def run(self):
-        install.run(self)
-        _install_notebook_extension()
-
-class DevelopCommand(develop):
-    def run(self):
-        develop.run(self)
-        _install_notebook_extension()
 
 setup(
     name='jupyter_dashboards_bundlers',
@@ -66,11 +35,10 @@ for more information.
         'dashboards_bundlers.php_download'
     ],
     include_package_data=True,
+    scripts=[
+        'scripts/jupyter-dashboards_bundlers'
+    ],
     install_requires=['jupyter_cms>=0.3.0'],
-    cmdclass={
-        'install': InstallCommand,
-        'develop': DevelopCommand
-    },
     classifiers=[
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
