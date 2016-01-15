@@ -12,8 +12,8 @@ Collection of reference implementation bundlers that convert, package, and deplo
 ## Prerequisites
 
 * Jupyter Notebook 4.0.x running on Python 3.x or Python 2.7.x
-* `jupyter_cms>=0.3.0`
-* `jupyter_dashboards>=0.3.0`
+* `jupyter_cms>=0.4.0`
+* `jupyter_dashboards>=0.4.0`
 * Edge, Chrome, Firefox, or Safari
 
 ## Install It

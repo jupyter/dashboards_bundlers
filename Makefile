@@ -34,8 +34,12 @@ help:
 build:
 	@-docker rm -f dev-build
 	@docker run -it --name dev-build \
-		$(REPO) bash -c 'pip install --no-binary :all: $(CMS_PACKAGE) $(DASHBOARDS_PACKAGE); \
-			$(PYTHON2_SETUP); \
+		$(REPO) bash -c 'pip install --no-binary :all: $(CMS_PACKAGE) $(DASHBOARDS_PACKAGE) && \
+			jupyter cms install --user --symlink --overwrite && \
+			jupyter dashboards install --user --symlink --overwrite && \
+			jupyter cms activate && \
+			jupyter dashboards activate && \
+			$(PYTHON2_SETUP) && \
 			pip install --no-binary :all: $(CMS_PACKAGE) $(DASHBOARDS_PACKAGE)'
 	@docker commit dev-build $(DEV_REPO)
 	@-docker rm -f dev-build

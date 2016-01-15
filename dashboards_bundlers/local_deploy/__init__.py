@@ -117,7 +117,7 @@ def bundle_web_static(output_path):
     ]
 
     # Paths for dashboard extension source and destination in local app folder
-    src_components = pjoin(jupyter_data_dir(), 'nbextensions/urth_dash_js/notebook')
+    src_components = pjoin(jupyter_data_dir(), 'nbextensions/jupyter_dashboards/notebook')
     dest_components = pjoin(output_path, 'static')
 
     # Copy individual files, making directories as we go
