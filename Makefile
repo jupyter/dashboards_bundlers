@@ -54,7 +54,6 @@ dev-python2: _dev
 dev-python3: LANG_SETUP_CMD?=python --version
 dev-python3: _dev
 
-_dev: NB_HOME?=/root
 _dev: CMD?=start-notebook.sh
 _dev: AUTORELOAD?=no
 _dev:
@@ -74,7 +73,6 @@ install:
 			jupyter dashboards_bundlers activate && \
 			$(CMD)'
 
-sdist: REPO?=jupyter/pyspark-notebook:$(TAG)
 sdist:
 	@docker run -it --rm \
 		-v `pwd`:/src \
