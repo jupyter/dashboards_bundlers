@@ -14,7 +14,13 @@
         var IPython = {};
         var Urth = window.Urth = window.Urth || {};
 {% block thebe_config %}
-        Urth.thebe_url = window.location.origin;
+        Urth.thebe_url = (function thebe_url() {
+            var origin = window.location.origin;
+            var pathname = window.location.pathname;
+            var start = pathname.search('/files');
+            var path = pathname.slice(0, start);
+            return origin + path;
+        })();
         Urth.tmpnb_mode = false;
 {% endblock %}
         Urth.kernel_name = '{%- if (nb.metadata is defined) and (nb.metadata.kernelspec is defined) and (nb.metadata.kernelspec.name is defined) %}

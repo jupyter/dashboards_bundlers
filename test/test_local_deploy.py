@@ -50,7 +50,7 @@ class TestLocalDeploy(unittest.TestCase):
 
         output_dir = pjoin(self.tmp, 'local_dashboards', 'no_imports')
         self.assertTrue(isdir(output_dir), 'app directory should exist')
-        self.assertEqual(handler.last_redirect, '/files/local_dashboards/no_imports/index.html', 
+        self.assertEqual(handler.last_redirect, '/files/local_dashboards/no_imports/index.html',
             'redirect to application url')
 
     def test_bundle_index(self):
@@ -61,7 +61,7 @@ class TestLocalDeploy(unittest.TestCase):
             contents = f.read()
             self.assertIn('DOCTYPE', contents, 'should declare a DOCTYPE')
             self.assertIn('data-main="./static/main.js', contents, 'should load main.js script')
-            self.assertIn("thebe_url = window.location.origin", contents, 'should use local notebook server for kernels')
+            self.assertIn("origin = window.location.origin", contents, 'should use local notebook server for kernels')
             self.assertIn("tmpnb_mode = false", contents, 'should not use tmpnb spawn API')
             self.assertIn("kernel_name = 'python3'", contents, 'should use correct kernel')
 
