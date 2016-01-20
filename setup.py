@@ -2,8 +2,8 @@
 # Distributed under the terms of the Modified BSD License.
 
 import os
+import sys
 from setuptools import setup
-
 
 # Get location of this file at runtime
 HERE = os.path.abspath(os.path.dirname(__file__))
@@ -13,18 +13,18 @@ VERSION_NS = {}
 with open(os.path.join(HERE, 'dashboards_bundlers/_version.py')) as f:
     exec(f.read(), {}, VERSION_NS)
 
-setup(
+setup_args = dict(
     name='jupyter_dashboards_bundlers',
     author='Jupyter Development Team',
     author_email='jupyter@googlegroups.com',
     description='Plugins for jupyter_cms to deploy and download notebooks as dashboard apps',
     long_description = '''
-    This package adds a *Deploy as* and *Download as* menu items for bundling 
+    This package adds a *Deploy as* and *Download as* menu items for bundling
 notebooks created using jupyter_dashboards as standalone web applications.
 
 See `the project README <https://github.com/jupyter-incubator/dashboards_bundlers>`_
-for more information. 
-''',   
+for more information.
+''',
     url='https://github.com/jupyter-incubator/dashboards_bundlers',
     version=VERSION_NS['__version__'],
     license='BSD',
@@ -51,3 +51,16 @@ for more information.
         'Programming Language :: Python :: 3.5'
     ]
 )
+
+if 'setuptools' in sys.modules:
+    # setupstools turns entrypoint scripts into executables on windows
+    setup_args['entry_points'] = {
+        'console_scripts': [
+            'jupyter-dashboards_bundlers = dashboards_bundlers.extensionapp:main'
+        ]
+    }
+    # Don't bother installing the .py scripts if if we're using entrypoints
+    setup_args.pop('scripts', None)
+
+if __name__ == '__main__':
+    setup(**setup_args)
