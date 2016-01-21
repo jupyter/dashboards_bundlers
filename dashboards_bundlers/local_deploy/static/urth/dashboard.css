@@ -119,6 +119,7 @@ body .kernel_controls {
 
 /* hide stderr and exceptions */
 .urth-dashboard .container .cell .output_stderr,
-.urth-dashboard .container .cell .output_error {
+.urth-dashboard .container .cell .output_error,
+.urth-dashboard .container .cell .thebe-message {
     display: none !important;
 }
