@@ -12,13 +12,25 @@ Collection of reference implementation bundlers that convert, package, and deplo
 ## Prerequisites
 
 * Jupyter Notebook 4.0.x running on Python 3.x or Python 2.7.x
-* `jupyter_cms>=0.3.0`
-* `jupyter_dashboards>=0.3.0`
+* `jupyter_cms>=0.4.0`
+* `jupyter_dashboards>=0.4.0`
 * Edge, Chrome, Firefox, or Safari
 
 ## Install It
 
-`pip install jupyter_dashboards_bundlers`
+```bash
+# install the python package
+pip install jupyter_dashboards_bundlers
+# enable the extension in your ~/.jupyter config
+jupyter dashboards_bundlers activate
+```
+
+## Uninstall It
+
+```bash
+jupyter dashboards_bundlers deactivate
+pip uninstall dashboards_bundlers
+```
 
 ## Use It
 
