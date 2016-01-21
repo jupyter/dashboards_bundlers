@@ -9,6 +9,8 @@ script:
     - mkdir -p /home/travis/.jupyter/nbconfig
     - jupyter notebook --generate-config
     - pip install jupyter_dashboards
+    - jupyter dashboards install --user --symlink
+    - jupyter dashboards activate
     - python setup.py sdist
     - pip install --no-use-wheel --no-deps dist/*.tar.gz
     - python -B -m unittest discover -s test
