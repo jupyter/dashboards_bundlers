@@ -116,3 +116,10 @@ body .kernel_controls {
 #dashboard-container img.unconfined {
     max-width: 100%;
 }
+
+/* hide stderr and exceptions */
+.urth-dashboard .container .cell .output_stderr,
+.urth-dashboard .container .cell .output_error,
+.urth-dashboard .container .cell .thebe-message {
+    display: none !important;
+}
