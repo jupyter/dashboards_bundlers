@@ -62,7 +62,7 @@ def bundle(handler, abs_nb_path):
 
 def bundle_index(output_path, notebook_fn, template_fn=DEFAULT_TEMPLATE_PATH, index_fn='index.html'):
     '''
-    Runs nbconvert using the provided template and writes the HTML output as 
+    Runs nbconvert using the provided template and writes the HTML output as
     the given index filename under the output directory.
 
     :param output_path: The output path of the dashboard being assembled
@@ -127,7 +127,7 @@ def bundle_web_static(output_path):
         if not os.path.exists(dest_dir):
             os.makedirs(dest_dir)
         shutil.copy(pjoin(src_components, component), dest_file)
-    
+
     # Copy entire directories
     for comp_dir in component_dirs:
         shutil.copytree(pjoin(src_components, comp_dir), pjoin(dest_components, comp_dir))
@@ -170,7 +170,7 @@ def bundle_declarative_widgets(output_path, notebook_file):
     # Web referenceable path from which all urth widget components will be served
     output_components_dir = pjoin(output_path, 'static/urth_components/')
 
-    # Copy declarative widgets js and installed bower components into the app 
+    # Copy declarative widgets js and installed bower components into the app
     # under output directory
     widgets_js_dir = pjoin(widgets_dir, 'js')
     shutil.copytree(widgets_js_dir, output_js_dir)
@@ -197,7 +197,7 @@ def create_index_html(path, env_vars, fmt, cwd, template_fn):
     )
 
     proc = subprocess.Popen([
-        'ipython',
+        'jupyter',
         'nbconvert',
         '--log-level',
         'ERROR',
