@@ -59,6 +59,11 @@ class ExtensionActivateApp(EnableNBExtensionApp):
                     'label': 'PHP Dashboard bundle (.zip)',
                     'module_name': 'dashboards_bundlers.php_download',
                     'group': 'download'
+                },
+                'dashboards_server_upload': {
+                    'label': 'Dashboard on Jupyter Dashboard Server',
+                    'module_name': 'dashboards_bundlers.server_upload',
+                    'group': 'deploy'
                 }
             }
         })
@@ -86,6 +91,7 @@ class ExtensionDeactivateApp(DisableNBExtensionApp):
             'jupyter_cms_bundlers': {
                 'dashboards_local_deploy' : None,
                 'dashboards_php_download' : None,
+                'dashboards_server_upload' : None
             }
         })
         self.log.info("Done.")
