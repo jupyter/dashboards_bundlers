@@ -64,6 +64,8 @@ _dev:
 	@docker run -it --rm \
 		-p 9500:8888 \
 		-e AUTORELOAD=$(AUTORELOAD) \
+		-e DASHBOARD_SERVER_URL=$(DASHBOARD_SERVER_URL) \
+		-e DASHBOARD_SERVER_AUTH_TOKEN=$(DASHBOARD_SERVER_AUTH_TOKEN) \
 		-v `pwd`:/src \
 		$(DEV_REPO) bash -c '$(LANG_SETUP_CMD) && $(EXT_DEV_SETUP) && $(CMD)'
 

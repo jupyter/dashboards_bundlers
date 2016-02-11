@@ -34,7 +34,7 @@ pip uninstall dashboards_bundlers
 
 ## Use It
 
-Currently, there are two bundlers available in this package. The first converts your notebook to a dashboard web application and deploys it to your Jupyter Notebook server for local use. To use it:
+Currently, there are three bundlers available in this package. The first converts your notebook to a dashboard web application and deploys it to your Jupyter Notebook server for local use. To use it:
 
 1. Write a notebook.
 2. Define a dashboard layout using the `jupyter_dashboards` extension.
@@ -49,15 +49,23 @@ The second converts your notebook to a dashboard web application and zips it up 
 4. Unzip the download.
 5. Refer to the `README.md` in the unzipped folder for deployment requirements.
 
+The third directly sends your notebook to a Jupyter Dashboards Server. To use it:
+
+1. Set the `DASHBOARD_SERVER_URL` environment variable, the `DASHBOARD_SERVER_AUTH_TOKEN` variable if an upload token is required, and launch the `jupyter notebook`.
+2. Write a notebook.
+3. Define a dashboard layout using the `jupyter_dashboards` extension.
+4. Click *File &rarr; Deploy as &rarr; Dashboard on Jupyter Dashboard Server*.
+5. Enjoy your dashboard after the redirect.
+
 ## Caveats
 
 See https://github.com/jupyter-incubator/dashboards#deploy for a full rundown on the current status of dashboard deployment.
 
 It is important to realize that kernels launched by your deployed dashboard will not being running in the same directory or possibly even the same environment as your original notebook. You must refer to external, kernel-side resources in a portable manner (e.g., put it in an external data store, use absolute file paths if your only concern is *File &rarr; Deploy as &rarr; Local Dashboard*). You must also ensure your kernel environment has all the same libraries installed as your notebook authoring environment.
 
-It is also your responsibility to associate any frontend, dashboard-side assets with your notebook before packaging it for deployment. To aid in this task, the bundlers here take advatnage of the notebook association feature provided by the `jupyter_cms` package. See the [associations demo](https://github.com/jupyter-incubator/contentmanagement/) for the markup you can use to refer to external files that should be included in your dashboard deployment.
+It is also your responsibility to associate any frontend, dashboard-side assets with your notebook before packaging it for deployment. To aid in this task, the first two bundlers take advantage of the notebook association feature provided by the `jupyter_cms` package. See the [associations demo](https://github.com/jupyter-incubator/contentmanagement/) for the markup you can use to refer to external files that should be included in your dashboard deployment.
 
-If you are using [declarative widgets](https://github.com/jupyter-incubator/declarativewidgets) in your dashboard, you should be mindful of the following when you deploy your dashboard.
+If you are using [declarative widgets](https://github.com/jupyter-incubator/declarativewidgets) in your dashboard, you should be mindful of the following when you deploy your dashboard:
 
 * You must run the entire notebook successfully before deploying. This action ensures all external Polymer components are properly installed on the notebook server and can be bundled with your converted notebook.
 * You cannot use `<urth-core-import>` elements in custom Polymer widgets that you develop outside your notebook. See [dashboards issue #78](https://github.com/jupyter-incubator/dashboards/issues/78) for the discussion and current workaround.
