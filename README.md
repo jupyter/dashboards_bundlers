@@ -7,7 +7,9 @@ Collection of reference implementation bundlers that convert, package, and deplo
 ## What It Gives You
 
 * *File &rarr; Deploy as &rarr; Local dashboard* menu item to deploy the current notebook as a dashboard within the same Jupyter Notebook server instance.
+* *File &rarr; Deploy as &rarr; Dashboard on Jupyter Dashboards Server* menu item to deploy the current notebook as a dashboard on a preconfigured [Jupyter Dashboards](https://github.com/jupyter-incubator/dashboards_nodejs_app) server. (See Use It section for config details.)
 * *File &rarr; Download as &rarr; PHP Dashboard bundle (.zip)* menu item to download the current notebook as a PHP dashboard web frontend that you can deploy and configure to use your own kernel provider (e.g., tmpnb + kernel gateway).
+
 
 ## Prerequisites
 
