@@ -43,7 +43,8 @@ def bundle(handler, abs_nb_path):
                 headers['Authorization'] = token
             result = requests.post(upload_url, files={'file': notebook},
                 headers=headers, timeout=60)
-            result.raise_for_status()
+            if result.status_code >= 400:
+                raise web.HTTPError(result.status_code)
 
         # Redirect for client might be different from internal upload URL
         redirect_server = os.getenv('DASHBOARD_REDIRECT_URL')
