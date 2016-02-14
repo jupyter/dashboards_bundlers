@@ -51,9 +51,12 @@ The second converts your notebook to a dashboard web application and zips it up 
 4. Unzip the download.
 5. Refer to the `README.md` in the unzipped folder for deployment requirements.
 
-The third directly sends your notebook to a Jupyter Dashboards Server. To use it:
+The third directly sends your notebook to a [Jupyter Dashboards Server](https://github.com/jupyter-incubator/dashboards_nodejs_app). To use it:
 
-1. Set the `DASHBOARD_SERVER_URL` environment variable, the `DASHBOARD_SERVER_AUTH_TOKEN` variable if an upload token is required, and launch the `jupyter notebook`.
+1. Set the environment variables below and launch your `jupyter notebook`.
+    * `DASHBOARD_SERVER_URL` - protocol, hostname, and port of the dashboard server to which to send dashboard notebooks
+    * `DASHBOARD_REDIRECT_URL` (optional) - protocol, hostname, and port to use when redirecting the user's browser after upload if different from `DASHBOARD_SERVER_URL`
+    * `DASHBOARD_SERVER_AUTH_TOKEN` (optional) - upload token is required by the dashboard server
 2. Write a notebook.
 3. Define a dashboard layout using the `jupyter_dashboards` extension.
 4. Click *File &rarr; Deploy as &rarr; Dashboard on Jupyter Dashboard Server*.
