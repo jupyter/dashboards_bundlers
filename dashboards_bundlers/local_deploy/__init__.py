@@ -107,7 +107,7 @@ def bundle_web_static(output_path):
         'bower_components/jquery/dist/jquery.min.js',
         'bower_components/jquery/dist/jquery.min.map',
         'bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css',
-        'bower_components/lodash/lodash.min.js',
+        'bower_components/lodash/dist/lodash.min.js',
         'bower_components/requirejs/require.js'
     ]
     # Select only dashboard common files

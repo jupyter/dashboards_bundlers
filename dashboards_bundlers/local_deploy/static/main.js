@@ -11,7 +11,7 @@ requirejs.config({
     ],
     paths: {
         jquery: 'bower_components/jquery/dist/jquery.min',
-        lodash: 'bower_components/lodash/lodash.min',
+        lodash: 'bower_components/lodash/dist/lodash.min',
         Gridstack: 'bower_components/gridstack/dist/gridstack.min',
         Thebe: 'thebe/main-built'
         // jquery-ui is included in Thebe
@@ -43,12 +43,12 @@ requirejs(['urth/dashboard'], function(Dashboard) {
         // any notebook code that depends on them.
 
         // Declarative widgets 0.2.x subclass the WidgetModel base class
-        // to guarantee message sequence. They register this new base with 
-        // the widget manager. Because the Thebe build includes these 
-        // modules and initializes the manager singleton, we need to map 
+        // to guarantee message sequence. They register this new base with
+        // the widget manager. Because the Thebe build includes these
+        // modules and initializes the manager singleton, we need to map
         // them across from the Thebe loader to our loader to avoid making
         // second, independent copies.
-        // All this goes away when we can use jupyter-js-services and 
+        // All this goes away when we can use jupyter-js-services and
         // ipywidgets independently.
         define('nbextensions/widgets/widgets/js/manager', function() {
             return {
