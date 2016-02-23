@@ -91,7 +91,7 @@ sdist:
 
 test: test-$(PYTHON)
 
-test-python2: SETUP_CMD?=$(PYTHON2_SETUP);
+test-python2: SETUP_CMD?=$(PYTHON2_SETUP); pip install requests;
 test-python2: _test
 
 test-python3: _test
