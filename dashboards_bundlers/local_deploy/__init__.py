@@ -132,7 +132,7 @@ def bundle_web_static(output_path):
     for comp_dir in component_dirs:
         shutil.copytree(pjoin(src_components, comp_dir), pjoin(dest_components, comp_dir))
 
-def bundle_declarative_widgets(output_path, notebook_file):
+def bundle_declarative_widgets(output_path, notebook_file, widget_folder='static'):
     '''
     Adds frontend bower components dependencies into the bundle for the dashboard
     application. Creates the following directories under output_path:
@@ -147,6 +147,7 @@ def bundle_declarative_widgets(output_path, notebook_file):
 
     :param output_path: The output path of the dashboard being assembled
     :param notebook_file: The absolute path to the notebook file being packaged
+    :param widget_folder: Subfolder name in which the widgets should be contained.
     '''
     widgets_dir = pjoin(jupyter_data_dir(), 'nbextensions/urth_widgets')
     if not os.path.isdir(widgets_dir):
@@ -157,18 +158,18 @@ def bundle_declarative_widgets(output_path, notebook_file):
     # Using find instead of a regex to help future-proof changes that might be
     # to how user's will use urth-core-import
     # (i.e. <link is=urth-core-import> vs. <urth-core-import>)
-    any_cells_with_widgets = any(cell.get('source').find('urth-core-import') != -1 for cell in notebook.cells)
+    any_cells_with_widgets = any(cell.get('source').find('urth-core-') != -1 for cell in notebook.cells)
     if not any_cells_with_widgets:
         return
 
     # Directory of declarative widgets extension
     widgets_dir = pjoin(jupyter_data_dir(), 'nbextensions/urth_widgets')
     # Root of declarative widgets within a dashboard app
-    output_widgets_dir = pjoin(output_path, 'static/urth_widgets/')
+    output_widgets_dir = pjoin(output_path, widget_folder, 'urth_widgets/') if widget_folder is not None else pjoin(output_path, 'urth_widgets/')
     # JavaScript entry point for widgets in dashboard app
     output_js_dir = pjoin(output_widgets_dir, 'js')
     # Web referenceable path from which all urth widget components will be served
-    output_components_dir = pjoin(output_path, 'static/urth_components/')
+    output_components_dir = pjoin(output_path, widget_folder, 'urth_components/') if widget_folder is not None else pjoin(output_path, 'urth_components/')
 
     # Copy declarative widgets js and installed bower components into the app
     # under output directory
