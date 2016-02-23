@@ -6,6 +6,14 @@ Collection of reference implementation bundlers that convert, package, and deplo
 
 ![Dashboard bundlers screenshot](etc/bundlers_intro.png)
 
+This repository is a portion of the `jupyter-incubator/dashboards` effort which covers:
+
+* [Arranging](https://github.com/jupyter-incubator/dashboards) notebook outputs in a grid-layout
+* [Bundling](https://github.com/jupyter-incubator/dashboards_bundlers) notebooks and associated assets for deployment as dashboards (**this repo**)
+* [Serving](https://github.com/jupyter-incubator/dashboards_server) notebook-defined dashboards as standalone web apps
+
+It is also has close ties to [jupyter-incubator/declarativewidgets](https://github.com/jupyter-incubator/declarativewidgets) which provides one way (but not the only way) of enabling rich interactivity in notebook-defined dashboards.
+
 ## What It Gives You
 
 * *File &rarr; Download as &rarr; PHP Dashboard bundle (.zip)* menu item to download the current notebook as a PHP application using  [Thebe](https://github.com/oreillymedia/thebe) that you can deploy and configure.
