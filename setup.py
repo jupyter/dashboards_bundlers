@@ -38,7 +38,10 @@ for more information.
     scripts=[
         'scripts/jupyter-dashboards_bundlers'
     ],
-    install_requires=['jupyter_cms>=0.3.0'],
+    install_requires=[
+        'jupyter_cms>=0.3.0',
+        'requests>=2.7, <3.0'
+    ],
     classifiers=[
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
