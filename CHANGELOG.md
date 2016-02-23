@@ -1,8 +1,12 @@
 # Changelog
 
-## 0.2.3 (2016-02-23)
+## 0.3.1 (2016-02-23)
 
 * Fix compatibility with `jupyter_dashboards>=0.4.2` (internal lodash path change)
+
+## 0.3.0 (2016-02-13)
+
+* Add bundler to deploy to `jupyter-incubator/dashboards_server`
 
 ## 0.2.2 (2016-02-07)
 
