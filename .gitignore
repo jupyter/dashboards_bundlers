@@ -59,3 +59,4 @@ target/
 # OSX
 .DS_Store
 .ipynb_checkpoints/
+etc/notebooks/local_dashboards/
