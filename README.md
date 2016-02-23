@@ -70,8 +70,8 @@ Ultimately, this option should go away as the [Jupyter Dashboard Server](https:/
 
 The third directly sends your notebook to a [Jupyter Dashboards Server](https://github.com/jupyter-incubator/dashboards_server). To use it:
 
-0. Run an instance of the `jupyter_dashboards` server.
-1. Set the environment variables below and launch your `jupyter notebook`.
+0. Run an instance of the `jupyter_dashboards` server by following the instructions in the [jupyter-incubator/dashboards_server](https://github.com/jupyter-incubator/dashboards_server) project README.
+1. Set the following environment variables before launching your Jupyter Notebook server with the bundler extensions installed.
     * `DASHBOARD_SERVER_URL` - protocol, hostname, and port of the dashboard server to which to send dashboard notebooks
     * `DASHBOARD_REDIRECT_URL` (optional) - protocol, hostname, and port to use when redirecting the user's browser after upload if different from `DASHBOARD_SERVER_URL`
     * `DASHBOARD_SERVER_AUTH_TOKEN` (optional) - upload token required by the dashboard server
