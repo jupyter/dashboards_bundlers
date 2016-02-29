@@ -175,8 +175,14 @@ def bundle_declarative_widgets(output_path, notebook_file):
     widgets_js_dir = pjoin(widgets_dir, 'js')
     shutil.copytree(widgets_js_dir, output_js_dir)
 
-    # Install the bower components into the output components directory
-    shutil.copytree(pjoin(widgets_dir, 'bower_components'), output_components_dir)
+    # Widgets bower components could be under 'urth_components' or
+    # 'bower_components' depending on the version of widgets being used.
+    widgets_components_dir = pjoin(widgets_dir, 'urth_components')
+    if not os.path.isdir(widgets_components_dir):
+        widgets_components_dir = pjoin(widgets_dir, 'bower_components')
+
+    # Install the widget components into the output components directory
+    shutil.copytree(widgets_components_dir, output_components_dir)
 
 def create_index_html(path, env_vars, fmt, cwd, template_fn):
     '''

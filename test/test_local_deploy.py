@@ -15,7 +15,7 @@ DECL_WIDGETS_DIR = pjoin(jupyter_data_dir(), 'nbextensions/urth_widgets/')
 DECL_WIDGETS_JS_DIR = pjoin(DECL_WIDGETS_DIR, 'js')
 DECL_VIZ_DIR = pjoin(DECL_WIDGETS_DIR, 'components/urth-viz')
 DECL_CORE_DIR = pjoin(DECL_WIDGETS_DIR, 'components/urth-core')
-BOWER_COMPONENT_DIR = pjoin(jupyter_data_dir(), 'nbextensions/urth_widgets/bower_components/component-a')
+BOWER_COMPONENT_DIR = pjoin(jupyter_data_dir(), 'nbextensions/urth_widgets/urth_components/component-a')
 
 class MockHandler(object):
     def __init__(self, notebook_dir):
