@@ -40,7 +40,7 @@ def bundle(handler, abs_nb_path):
             token = os.getenv('DASHBOARD_SERVER_AUTH_TOKEN')
             if token:
                 # TODO: server side should expect Authorization: token <value>
-                headers['Authorization'] = token
+                headers['Authorization'] = 'token {}'.format(token)
             result = requests.post(upload_url, files={'file': notebook},
                 headers=headers, timeout=60)
             if result.status_code >= 400:
