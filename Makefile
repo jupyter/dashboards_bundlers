@@ -84,7 +84,7 @@ dev-with-dashboard-server: ## Same as dev but Docker link to dashboards-server c
 		--link dashboard-server:dashboard-server \
 		-e DASHBOARD_SERVER_URL=http://dashboard-server:3000 \
 		-e DASHBOARD_REDIRECT_URL=http://$(DASHBOARD_REDIRECT_URL):3000 \
-		$(DEV_REPO) bash -c 'pip install requests jupyter_declarativewidgets && \
+		$(DEV_REPO) bash -c 'pip install requests && \
 			jupyter declarativewidgets install --user --symlink --overwrite && \
 			jupyter declarativewidgets activate && \
 		 	$(EXT_DEV_SETUP) && $(CMD)'
