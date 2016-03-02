@@ -74,7 +74,7 @@ class TestServerUpload(unittest.TestCase):
 
         kwargs = converter.requests.post.kwargs
         self.assertEqual(kwargs['headers'],
-            {'Authorization' : 'fake-token'})
+            {'Authorization' : 'token fake-token'})
 
     def test_url_interpolation(self):
         '''Should build the server URL from the request Host header.'''
