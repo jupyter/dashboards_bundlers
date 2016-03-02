@@ -9,6 +9,8 @@ PYTHON?=python3
 CMS_PACKAGE?=jupyter_cms
 # Dashboards package to use for dev, expressed as a pip installable
 DASHBOARDS_PACKAGE?=jupyter_dashboards
+# Decl widgets package to use for dev, expressed as a pip installabe
+WIDGETS_PACKAGE?=jupyter_declarativewidgets
 
 # Using pyspark notebook to get both a python2 and python3 env
 REPO:=jupyter/pyspark-notebook:2988869079e6
@@ -22,57 +24,73 @@ define EXT_DEV_SETUP
 	popd
 endef
 
-help:
-	@echo 'Host commands:'
-	@echo '     build - build dev image'
-	@echo '     clean - clean built files'
-	@echo '       dev - start notebook server in a container with source mounted'
-	@echo '   install - install latest sdist into a container'
-	@echo '     sdist - build a source distribution into dist/'
-	@echo '      test - run unit tests within a container'
+define NOTEBOOK_SERVER
+@docker run -it --rm \
+	-p 9500:8888 \
+	-e AUTORELOAD=$(AUTORELOAD) \
+	-e DASHBOARD_SERVER_URL=$(DASHBOARD_SERVER_URL) \
+	-e DASHBOARD_REDIRECT_URL=$(DASHBOARD_REDIRECT_URL) \
+	-e DASHBOARD_SERVER_AUTH_TOKEN=$(DASHBOARD_SERVER_AUTH_TOKEN) \
+	-v `pwd`:/src \
+	-v `pwd`/etc/notebooks:/home/jovyan/work
+endef
 
-build:
+help:
+# http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+build: ## Build the dev Docker image
 	@-docker rm -f dev-build
 	@docker run -it --name dev-build \
-		$(REPO) bash -c 'pip install --no-binary :all: $(CMS_PACKAGE) $(DASHBOARDS_PACKAGE) && \
+		$(REPO) bash -c 'pip install --no-binary :all: $(CMS_PACKAGE) $(DASHBOARDS_PACKAGE) $(WIDGETS_PACKAGE) && \
 			jupyter cms install --user --symlink --overwrite && \
 			jupyter dashboards install --user --symlink --overwrite && \
 			jupyter cms activate && \
-			jupyter dashboards activate && \
-			$(PYTHON2_SETUP) && \
-			pip install --no-binary :all: $(CMS_PACKAGE) $(DASHBOARDS_PACKAGE)'
+			jupyter dashboards activate'
+	@docker commit dev-build $(DEV_REPO)
+	@-docker rm -f dev-build
+	@docker run -it --name dev-build \
+		$(DEV_REPO) bash -c '$(PYTHON2_SETUP) && \
+			pip install --no-binary :all: requests $(CMS_PACKAGE) $(DASHBOARDS_PACKAGE) $(WIDGETS_PACKAGE) && \
+			jupyter cms install --user --symlink --overwrite && \
+			jupyter dashboards install --user --symlink --overwrite && \
+			jupyter cms activate && \
+			jupyter dashboards activate'
 	@docker commit dev-build $(DEV_REPO)
 	@-docker rm -f dev-build
 
-clean:
+clean: ## Clean source tree
 	@-rm -rf dist
 	@-rm -rf *.egg-info
 	@-rm -rf __pycache__ */__pycache__ */*/__pycache__
 	@-find . -name '*.pyc' -exec rm -fv {} \;
 
-dev: dev-$(PYTHON)
+dev: dev-$(PYTHON) ## Start notebook server in a container with source mounted
 
-dev-python2: LANG_SETUP_CMD?=$(PYTHON2_SETUP) && python --version
-dev-python2: _dev
+dev-python2: CMD?=start-notebook.sh
+dev-python2:
+	$(NOTEBOOK_SERVER) \
+		$(DEV_REPO) bash -c '$(PYTHON2_SETUP) && python --version && $(EXT_DEV_SETUP) && $(CMD)'
 
-dev-python3: LANG_SETUP_CMD?=python --version
-dev-python3: _dev
+dev-python3: CMD?=start-notebook.sh
+dev-python3:
+	$(NOTEBOOK_SERVER) \
+		$(DEV_REPO) bash -c 'python --version && $(EXT_DEV_SETUP) && $(CMD)'
 
-_dev: CMD?=start-notebook.sh
-_dev: AUTORELOAD?=no
-_dev:
-	@docker run -it --rm \
-		-p 9500:8888 \
-		-e AUTORELOAD=$(AUTORELOAD) \
-		-e DASHBOARD_SERVER_URL=$(DASHBOARD_SERVER_URL) \
-		-e DASHBOARD_REDIRECT_URL=$(DASHBOARD_REDIRECT_URL) \
-		-e DASHBOARD_SERVER_AUTH_TOKEN=$(DASHBOARD_SERVER_AUTH_TOKEN) \
-		-v `pwd`:/src \
-		-v `pwd`/etc/notebooks:/home/jovyan/work \
-		$(DEV_REPO) bash -c '$(LANG_SETUP_CMD) && $(EXT_DEV_SETUP) && $(CMD)'
+dev-with-dashboard-server: CMD?=start-notebook.sh
+dev-with-dashboard-server: DASHBOARD_REDIRECT_URL?=$$(docker-machine ip $$(docker-machine active))
+dev-with-dashboard-server: ## Same as dev but Docker link to dashboards-server container
+	$(NOTEBOOK_SERVER) \
+		--link dashboard-server:dashboard-server \
+		-e DASHBOARD_SERVER_URL=http://dashboard-server:3000 \
+		-e DASHBOARD_REDIRECT_URL=http://$(DASHBOARD_REDIRECT_URL):3000 \
+		$(DEV_REPO) bash -c 'pip install requests jupyter_declarativewidgets && \
+			jupyter declarativewidgets install --user --symlink --overwrite && \
+			jupyter declarativewidgets activate && \
+		 	$(EXT_DEV_SETUP) && $(CMD)'
 
 install: CMD?=exit
-install:
+install: ## Install and activate the sdist package in the container
 	@docker run -it --rm \
 		--user jovyan \
 		-v `pwd`:/src \
@@ -81,7 +99,7 @@ install:
 			jupyter dashboards_bundlers activate && \
 			$(CMD)'
 
-sdist:
+sdist: ## Build a source distribution in dist/
 	@docker run -it --rm \
 		-v `pwd`:/src \
 		$(REPO) bash -c 'cp -r /src /tmp/src && \
@@ -89,9 +107,9 @@ sdist:
 			python setup.py sdist $(POST_SDIST) && \
 			cp -r dist /src'
 
-test: test-$(PYTHON)
+test: test-$(PYTHON) ## Run tests
 
-test-python2: SETUP_CMD?=$(PYTHON2_SETUP); pip install requests;
+test-python2: SETUP_CMD?=$(PYTHON2_SETUP);
 test-python2: _test
 
 test-python3: _test
@@ -104,4 +122,4 @@ _test:
 		$(DEV_REPO) bash -c '$(SETUP_CMD) $(CMD)'
 
 release: POST_SDIST=register upload
-release: sdist
+release: sdist ## Package and release to PyPI
