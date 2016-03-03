@@ -4,7 +4,9 @@
 import unittest
 import copy
 import os
+import zipfile
 import dashboards_bundlers.server_upload as converter
+import jupyter_cms
 from tornado import web
 
 class MockResult(object):
@@ -24,6 +26,24 @@ class MockPost(object):
         self.kwargs = kwargs
         return MockResult(self.status_code)
 
+class MockZipPost(object):
+    '''
+    Explicitly checks for a posted zip file
+    '''
+    def __init__(self, status_code):
+        self.args = None
+        self.kwargs = None
+        self.status_code = status_code
+
+    def __call__(self, *args, **kwargs):
+        if self.args or self.kwargs:
+            raise RuntimeError('MockZipPost already invoked')
+        self.args = args
+        self.kwargs = kwargs
+        uploaded_zip = zipfile.ZipFile(kwargs['files']['file'], 'r')
+        self.zipped_files = uploaded_zip.namelist()
+        return MockResult(self.status_code)
+
 class MockRequest(object):
     def __init__(self, host, protocol):
         self.host = host
@@ -33,6 +53,7 @@ class MockHandler(object):
     def __init__(self, host='notebook-server:8888', protocol='http'):
         self.request = MockRequest(host, protocol)
         self.last_redirect = None
+        self.tools = jupyter_cms.bundler.BundlerTools()
 
     def redirect(self, location):
         self.last_redirect = location
@@ -64,6 +85,26 @@ class TestServerUpload(unittest.TestCase):
         self.assertEqual(kwargs['headers'], {})
         self.assertEqual(handler.last_redirect,
             'http://dashboard-server/dashboards/no_imports')
+
+    def test_upload_zip(self):
+        '''
+        Should POST the notebook in a zip with resources and redirect to
+        the dashboard server.
+        '''
+        os.environ['DASHBOARD_SERVER_URL'] = 'http://dashboard-server'
+        handler = MockHandler()
+        converter.requests.post = MockZipPost(200)
+        converter.bundle(handler, 'test/resources/some.ipynb')
+
+        args = converter.requests.post.args
+        kwargs = converter.requests.post.kwargs
+        self.assertEqual(args[0], 'http://dashboard-server/_api/notebooks/some')
+        self.assertTrue(kwargs['files']['file'])
+        self.assertEqual(kwargs['headers'], {})
+        self.assertEqual(handler.last_redirect,
+            'http://dashboard-server/dashboards/some')
+        self.assertTrue('index.ipynb' in converter.requests.post.zipped_files)
+        self.assertTrue('some.csv' in converter.requests.post.zipped_files)
 
     def test_upload_token(self):
         '''Should include an auth token in the request.'''
