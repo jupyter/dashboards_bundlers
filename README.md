@@ -22,10 +22,15 @@ It is also has close ties to [jupyter-incubator/declarativewidgets](https://gith
 
 ## Prerequisites
 
-* Jupyter Notebook 4.0.x running on Python 3.x or Python 2.7.x
-* `jupyter_cms>=0.4.0`
-* `jupyter_dashboards>=0.4.0`
+* Jupyter Notebook 4.0.x or 4.1.x running on Python 3.x or Python 2.7.x
 * Edge, Chrome, Firefox, or Safari
+* `jupyter_cms>=0.4.0` for bundling options
+* `jupyter_dashboards>=0.4.0` for local deploy and download options
+
+## Compatibility
+
+* `jupyter_declarativewidgets>=0.4.0` for deploying dashboards with declarative widgets
+* `jupyter-incubator/dashboards_server>=0.3.0` for dashboard server deployment option wtih declarative widgets
 
 ## Install It
 
