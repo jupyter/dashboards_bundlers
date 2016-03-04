@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 (2016-03-04)
+
+* Fix authorization header format for deployment to dashboard server
+* Support bundling of frontend assets when deploying to dashboard server
+* Make forward compatible with `declarative widgets>=0.5.0`
+
 ## 0.3.1 (2016-02-23)
 
 * Fix compatibility with `jupyter_dashboards>=0.4.2` (internal lodash path change)
