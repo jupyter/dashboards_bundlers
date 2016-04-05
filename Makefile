@@ -13,8 +13,8 @@ DASHBOARDS_PACKAGE?=jupyter_dashboards
 WIDGETS_PACKAGE?=jupyter_declarativewidgets
 
 # Using pyspark notebook to get both a python2 and python3 env
-REPO:=jupyter/pyspark-notebook:2988869079e6
-DEV_REPO:=jupyter/pyspark-notebook-db-dev:2988869079e6
+REPO:=jupyter/pyspark-notebook:0017b56d93c9
+DEV_REPO:=jupyter/pyspark-notebook-db-dev:0017b56d93c9
 PYTHON2_SETUP:=source activate python2
 
 define EXT_DEV_SETUP
