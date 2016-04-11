@@ -58,7 +58,7 @@ The first converts your notebook to a PHP web application and zips it up with a 
 
 1. Write a notebook.
 2. Define a dashboard layout using the `jupyter_dashboards` extension.
-3. If the notebook requires any frontend assets (e.g., CSS files), [associate them with the notebook](https://github.com/jupyter-incubator/contentmanagement/).
+3. If the notebook requires any frontend assets (e.g., CSS files), [associate them with the notebook](https://github.com/jupyter-incubator/contentmanagement/blob/master/etc/notebooks/associations_demo/associations_demo.ipynb).
 4. Click *File &rarr; Download as &rarr; PHP Dashboard bundle (.zip)*.
 5. Unzip the download.
 6. Refer to the `README.md` in the unzipped folder for further instructions.
@@ -73,7 +73,7 @@ The second bundler converts your notebook to a static HTML web application and d
 
 1. Write a notebook.
 2. Define a dashboard layout using the `jupyter_dashboards` extension.
-3. If the notebook requires any frontend assets (e.g., CSS files), [associate them with the notebook](https://github.com/jupyter-incubator/contentmanagement/).
+3. If the notebook requires any frontend assets (e.g., CSS files), [associate them with the notebook](https://github.com/jupyter-incubator/contentmanagement/blob/master/etc/notebooks/associations_demo/associations_demo.ipynb).
 4. Click *File &rarr; Deploy as &rarr; Local Dashboard*.
 5. Enjoy your dashboard after the redirect.
 
@@ -92,7 +92,7 @@ The third directly sends your notebook to a [Jupyter Dashboards Server](https://
     * `DASHBOARD_SERVER_AUTH_TOKEN` (optional) - upload token required by the dashboard server
 2. Write a notebook.
 3. Define a dashboard layout using the `jupyter_dashboards` extension.
-4. If the notebook requires any frontend assets (e.g., CSS files), [associate them with the notebook](https://github.com/jupyter-incubator/contentmanagement/).
+4. If the notebook requires any frontend assets (e.g., CSS files), [associate them with the notebook](https://github.com/jupyter-incubator/contentmanagement/blob/master/etc/notebooks/associations_demo/associations_demo.ipynb).
 5. Click *File &rarr; Deploy as &rarr; Dashboard on Jupyter Dashboard Server*.
 6. Enjoy your dashboard after the redirect.
 
@@ -104,7 +104,7 @@ Ultimately, this option should become the primary reference implementation of ho
 
 It is important to realize that kernels launched by your deployed dashboard will not being running in the same directory or possibly even the same environment as your original notebook. You must refer to external, kernel-side resources in a portable manner (e.g., put it in an external data store, use absolute file paths if your only concern is *File &rarr; Deploy as &rarr; Local Dashboard*). You must also ensure your kernel environment has all the same libraries installed as your notebook authoring environment.
 
-It is also your responsibility to associate any frontend, dashboard-side assets with your notebook before packaging it for deployment. To aid in this task, all three bundlers here take advantage of the notebook association feature provided by the `jupyter_cms` package. See the [associations demo](https://github.com/jupyter-incubator/contentmanagement/) for the markup you can use to refer to external files that should be included in your dashboard deployment.
+It is also your responsibility to associate any frontend, dashboard-side assets with your notebook before packaging it for deployment. To aid in this task, all three bundlers here take advantage of the notebook association feature provided by the `jupyter_cms` package. See the [associations demo](https://github.com/jupyter-incubator/contentmanagement/blob/master/etc/notebooks/associations_demo/associations_demo.ipynb) for the markup you can use to refer to external files that should be included in your dashboard deployment.
 
 If you are using [declarative widgets](https://github.com/jupyter-incubator/declarativewidgets) in your dashboard, you should be mindful of the following when you deploy your dashboard:
 
