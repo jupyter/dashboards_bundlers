@@ -33,7 +33,7 @@ class MockHandler(object):
     def finish(self):
         self.finished = True
 
-class TestPHPDownload(unittest.TestCase):
+class TestServerDownload(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.mkdtemp()
 
