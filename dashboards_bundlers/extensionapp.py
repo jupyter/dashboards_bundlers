@@ -61,9 +61,14 @@ class ExtensionActivateApp(EnableNBExtensionApp):
                     'group': 'download'
                 },
                 'dashboards_server_upload': {
-                    'label': 'Dashboard on Jupyter Dashboard Server',
+                    'label': 'Dashboard on Jupyter Dashboards Server',
                     'module_name': 'dashboards_bundlers.server_upload',
                     'group': 'deploy'
+                },
+                'dashboards_server_download': {
+                    'label': 'Jupyter Dashboards Server bundle (.zip)',
+                    'module_name': 'dashboards_bundlers.server_download',
+                    'group': 'download'
                 }
             }
         })
@@ -91,7 +96,8 @@ class ExtensionDeactivateApp(DisableNBExtensionApp):
             'jupyter_cms_bundlers': {
                 'dashboards_local_deploy' : None,
                 'dashboards_php_download' : None,
-                'dashboards_server_upload' : None
+                'dashboards_server_upload' : None,
+                'dashboards_server_download' : None
             }
         })
         self.log.info("Done.")
