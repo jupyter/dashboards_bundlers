@@ -12,9 +12,9 @@ import glob
 import nbformat
 from os.path import join as pjoin
 from tempfile import mkdtemp
-from jupyter_core.paths import jupyter_data_dir
+from jupyter_core.paths import jupyter_path
 from notebook.utils import url_path_join
-from tornado import escape
+from tornado import escape, web
 
 # Location of this file
 HERE = os.path.abspath(os.path.dirname(__file__))
@@ -22,6 +22,17 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 DEFAULT_TEMPLATE_PATH = pjoin(HERE, 'jinja_templates', 'index.html.tpl')
 # Absolute path for dashboard static resources
 STATICS_PATH = pjoin(HERE, 'static')
+
+def get_extension_path(*parts):
+    '''
+    Searches all known jupyter extension paths for the referenced directory.
+    Returns the first hit or None if not found.
+    '''
+    ext_path = pjoin(*parts)
+    for root_path in jupyter_path():
+        full_path = pjoin(root_path, 'nbextensions', ext_path)
+        if os.path.exists(full_path):
+            return full_path
 
 def bundle(handler, abs_nb_path):
     '''
@@ -117,7 +128,9 @@ def bundle_web_static(output_path):
     ]
 
     # Paths for dashboard extension source and destination in local app folder
-    src_components = pjoin(jupyter_data_dir(), 'nbextensions/jupyter_dashboards/notebook')
+    src_components = get_extension_path('jupyter_dashboards/notebook')
+    if src_components is None:
+        raise web.HTTPError(500, 'Missing jupyter_dashboards extension')
     dest_components = pjoin(output_path, 'static')
 
     # Copy individual files, making directories as we go
@@ -149,10 +162,6 @@ def bundle_declarative_widgets(output_path, notebook_file, widget_folder='static
     :param notebook_file: The absolute path to the notebook file being packaged
     :param widget_folder: Subfolder name in which the widgets should be contained.
     '''
-    widgets_dir = pjoin(jupyter_data_dir(), 'nbextensions/urth_widgets')
-    if not os.path.isdir(widgets_dir):
-        return
-
     # Check if any of the cells contain widgets, if not we do not to copy the bower_components
     notebook = nbformat.read(notebook_file, 4)
     # Using find instead of a regex to help future-proof changes that might be
@@ -161,9 +170,12 @@ def bundle_declarative_widgets(output_path, notebook_file, widget_folder='static
     any_cells_with_widgets = any(cell.get('source').find('urth-core-') != -1 for cell in notebook.cells)
     if not any_cells_with_widgets:
         return
-
+    
     # Directory of declarative widgets extension
-    widgets_dir = pjoin(jupyter_data_dir(), 'nbextensions/urth_widgets')
+    widgets_dir = get_extension_path('urth_widgets') #pjoin(jupyter_data_dir(), 'nbextensions/urth_widgets')
+    if widgets_dir is None:
+        raise web.HTTPError(500, 'Missing jupyter_declarativewidgets extension')
+
     # Root of declarative widgets within a dashboard app
     output_widgets_dir = pjoin(output_path, widget_folder, 'urth_widgets/') if widget_folder is not None else pjoin(output_path, 'urth_widgets/')
     # JavaScript entry point for widgets in dashboard app

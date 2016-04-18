@@ -4,9 +4,19 @@ import errno
 import os.path
 import sys
 
+from ._version import __version__
+
 from notebook.services.config import ConfigManager
 from notebook.nbextensions import (EnableNBExtensionApp, 
     DisableNBExtensionApp, flags, aliases)
+    
+try:
+    from notebook.nbextensions import BaseNBExtensionApp
+    _new_extensions = True
+except ImportError:
+    BaseNBExtensionApp = object
+    _new_extensions = False
+    
 from traitlets.config.application import catch_config_error
 from traitlets.config.application import Application
 
@@ -102,22 +112,64 @@ class ExtensionDeactivateApp(DisableNBExtensionApp):
         })
         self.log.info("Done.")
 
+class ExtensionQuickSetupApp(BaseNBExtensionApp):
+    """Installs and enables all parts of this extension"""
+    name = "jupyter dashboards_bundlers quick-setup"
+    version = __version__
+    description = "Installs and enables all features of the dashboards_bundlers extension"
+
+    def start(self):
+        self.argv.extend(['--py', 'dashboards_bundlers'])
+        
+        from jupyter_cms import bundlerapp
+        enable = bundlerapp.EnableNBBundlerApp()
+        enable.initialize(self.argv)
+        enable.start()
+
+class ExtensionQuickRemovalApp(BaseNBExtensionApp):
+    """Disables and uninstalls all parts of this extension"""
+    name = "jupyter dashboards_bundlers quick-remove"
+    version = __version__
+    description = "Disables and removes all features of the dashboards_bundlers extension"
+
+    def start(self):
+        self.argv.extend(['--py', 'dashboards_bundlers'])
+        
+        from jupyter_cms import bundlerapp
+        enable = bundlerapp.DisableNBBundlerApp()
+        enable.initialize(self.argv)
+        enable.start()
+
 class ExtensionApp(Application):
     '''CLI for extension management.'''
     name = u'jupyter_dashboards_bundlers extension'
     description = u'Utilities for managing the jupyter_dashboards_bundlers extension'
     examples = ""
 
-    subcommands = dict(
-        activate=(
-            ExtensionActivateApp,
-            "Activate the extension."
-        ),
-        deactivate=(
-            ExtensionDeactivateApp,
-            "Deactivate the extension."
-        )
-    )
+    subcommands = {}
+    
+    if _new_extensions:
+        subcommands.update({
+            "quick-setup": (
+                ExtensionQuickSetupApp,
+                "Install and enable everything in the package"
+            ),
+            "quick-remove": (
+                ExtensionQuickRemovalApp,
+                "Disable and uninstall everything in the package"
+            )
+        })
+    else:
+        subcommands.update(dict(
+            activate=(
+                ExtensionActivateApp,
+                "Activate the extension."
+            ),
+            deactivate=(
+                ExtensionDeactivateApp,
+                "Deactivate the extension."
+            )
+        ))
 
     def _classes_default(self):
         classes = super(ExtensionApp, self)._classes_default()
