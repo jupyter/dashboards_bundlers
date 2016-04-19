@@ -5,7 +5,7 @@ python:
     - 3.4
     - 3.5
 install:
-    - pip install "notebook>=4.0,<5.0" requests jupyter_cms jupyter_dashboards
+    - pip install "notebook==4.1" requests jupyter_cms jupyter_dashboards
 before_script:
     - mkdir -p /home/travis/.jupyter/nbconfig
     - jupyter notebook --generate-config
