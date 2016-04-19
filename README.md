@@ -21,29 +21,50 @@ It is also has close ties to [jupyter-incubator/declarativewidgets](https://gith
 * *File &rarr; Download as &rarr; Jupyter Dashboards Server bundle (.zip)* menu item to download the current notebook and its associated assets for manual deployment on a [Jupyter Dashboards](https://github.com/jupyter-incubator/dashboards_server) server.
 * *File &rarr; Deploy as &rarr; Dashboard on Jupyter Dashboards Server* menu item to deploy the current notebook and its associated assets as a dashboard on a target [Jupyter Dashboards](https://github.com/jupyter-incubator/dashboards_server) server.
 
-
 ## Prerequisites
 
-* Jupyter Notebook 4.0.x or 4.1.x running on Python 3.x or Python 2.7.x
+* Jupyter Notebook 4.2.x, 4.1.x, or 4.0.x running on Python 3.x or Python 2.7.x
 * Edge, Chrome, Firefox, or Safari
-* `jupyter_cms>=0.4.0` for bundling options
+* `jupyter_cms>=0.5.0` for bundling options
 * `jupyter_dashboards>=0.4.0` for local deploy and download options
 
 ## Compatibility
 
 * `jupyter_declarativewidgets>=0.4.0` for deploying dashboards with declarative widgets
-* `jupyter-incubator/dashboards_server>=0.3.0` for dashboard server deployment option with declarative widgets
+* `jupyter-incubator/dashboards_server>=0.4.0` for dashboard server deployment option with declarative widgets
 
 ## Install It
+
+In Jupyter Notebook 4.2, you can install and activate all features of the extension in two commands like so:
 
 ```bash
 # install the python package
 pip install jupyter_dashboards_bundlers
-# enable the extension in your ~/.jupyter config
+# Install all parts of the extension to the active conda / venv / python env
+# and enable all parts of it in the jupyter profile in that environment
+# See jupyter dashboards_bundlers quick-setup --help for other options (e.g., --user)
+jupyter dashboards_bundlers quick-setup --sys-prefix
+```
+
+In Jupyter Notebook 4.1 and 4.0, you install and activate the extension like so:
+
+```bash
+# Install the python package
+pip install jupyter_dashboards_bundlers
+# Enable the extension in your ~/.jupyter config
 jupyter dashboards_bundlers activate
 ```
 
 ## Uninstall It
+
+In Jupyter Notebook 4.2:
+
+```bash
+jupyter dashboards_bundlers quick-remove --sys-prefix
+pip uninstall dashboards_bundlers
+```
+
+In Jupyter Notebook 4.0 and 4.1:
 
 ```bash
 jupyter dashboards_bundlers deactivate
@@ -65,7 +86,7 @@ The first converts your notebook to a PHP web application and zips it up with a 
 5. Unzip the download.
 6. Refer to the `README.md` in the unzipped folder for further instructions.
 
-Note that the PHP application uses [Thebe](https://github.com/oreillymedia/thebe) which provides users with unfettered access to the backend kernel. Use it for public examples or in secure environments.
+**Note:** The PHP application uses [Thebe](https://github.com/oreillymedia/thebe) which provides users with unfettered access to the backend kernel. Use it for public examples or in secure environments.
 
 Ultimately, this option should go away as the [Jupyter Dashboard Server](https://github.com/jupyter-incubator/dashboards_server) matures. See the [dashboard deployment roadmap](https://github.com/jupyter-incubator/dashboards/wiki/Deployment-Roadmap) and [deployed dashboard threat analysis](https://github.com/jupyter-incubator/dashboards/wiki/Deployed-Dashboard-Threat-Analysis) for details.
 
@@ -79,7 +100,7 @@ The second bundler converts your notebook to a static HTML web application and d
 4. Click *File &rarr; Deploy as &rarr; Local Dashboard*.
 5. Enjoy your dashboard after the redirect.
 
-Note that the static HTML web application also uses [Thebe](https://github.com/oreillymedia/thebe) which provides unfettered access to a kernel in your notebook server. Use it for public examples or in secure environments.
+**Note:** The static HTML web application also uses [Thebe](https://github.com/oreillymedia/thebe) which provides unfettered access to a kernel in your notebook server. Use it for public examples or in secure environments.
 
 Ultimately, this option should go away as the [Jupyter Dashboard Server](https://github.com/jupyter-incubator/dashboards_server) matures. See the [dashboard deployment roadmap](https://github.com/jupyter-incubator/dashboards/wiki/Deployment-Roadmap) and [deployed dashboard threat analysis](https://github.com/jupyter-incubator/dashboards/wiki/Deployed-Dashboard-Threat-Analysis) for details.
 

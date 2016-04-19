@@ -8,8 +8,7 @@ import tempfile
 from notebook.utils import url_path_join
 from tornado import escape, web
 from tornado.log import access_log, app_log
-from ..local_deploy import bundle_file_references, bundle_declarative_widgets, \
-    bundle_web_static
+from ..local_deploy import bundle_file_references, bundle_declarative_widgets
 
 UPLOAD_ENDPOINT = '/_api/notebooks/'
 VIEW_ENDPOINT = '/dashboards/'

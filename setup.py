@@ -28,19 +28,21 @@ for more information.
     url='https://github.com/jupyter-incubator/dashboards_bundlers',
     version=VERSION_NS['__version__'],
     license='BSD',
-    platforms=['Jupyter Notebook 4.0.x'],
+    platforms=['Jupyter Notebook 4.0.x', 'Jupyter Notebook 4.1.x', 'Jupyter Notebook 4.2.x'],
     packages=[
         'dashboards_bundlers',
         'dashboards_bundlers.local_deploy',
-        'dashboards_bundlers.php_download'
+        'dashboards_bundlers.php_download',
+        'dashboards_bundlers.server_upload',
+        'dashboards_bundlers.server_download'
     ],
     include_package_data=True,
     scripts=[
         'scripts/jupyter-dashboards_bundlers'
     ],
     install_requires=[
-        'jupyter_cms>=0.3.0',
-        'requests>=2.7, <3.0'
+        'jupyter_cms>=0.5.0',
+        'requests>=2.7,<3.0'
     ],
     classifiers=[
         'Intended Audience :: Developers',
