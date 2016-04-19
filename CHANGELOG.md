@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0 (2016-04-18)
+
+* Add bundler to download a zip for deployment on `jupyter-incubator/dashboards_server`
+* Improve documentation about bundling associated assets
+* Make compatible with Jupyter Notebook 4.2
+
 ## 0.4.0 (2016-03-04)
 
 * Fix authorization header format for deployment to dashboard server
