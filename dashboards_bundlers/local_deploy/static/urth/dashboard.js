@@ -3,8 +3,9 @@
  * Distributed under the terms of the Modified BSD License.
  */
 define(['jquery', 'Thebe', 'urth-common/error-log'], function($, Thebe, ErrorLog) {
-    var $container,
-        thebe;
+    'use strict';
+
+    var $container, thebe;
 
     function getQueryParam(name) {
         var vars = window.location.search.substring(1).split('&');
@@ -63,9 +64,9 @@ define(['jquery', 'Thebe', 'urth-common/error-log'], function($, Thebe, ErrorLog
         return kernel_ready;
     }
 
-    function initGrid(deferred) {
+    function initGrid() {
+        var deferred = $.Deferred();
         require(['urth-common/gridstack-custom'], function(Gridstack) {
-            $('body').addClass('grid-view');
             $container.addClass('grid-stack');
 
             // enable gridstack
@@ -87,6 +88,7 @@ define(['jquery', 'Thebe', 'urth-common/error-log'], function($, Thebe, ErrorLog
 
             deferred.resolve();
         });
+        return deferred;
     }
 
     function showRow(row, col) {
@@ -124,25 +126,21 @@ define(['jquery', 'Thebe', 'urth-common/error-log'], function($, Thebe, ErrorLog
                 url: Urth.thebe_url
             });
 
-            // initialize the grid layout
-            var grid_ready = $.Deferred();
-            var row = getQueryParam('row');
-            if (!row) {
-                // initialize the grid and show it once ready
-                initGrid(grid_ready);
-                grid_ready.then(_showDashboard);
-            } else {
-                // show only given row/column
-                var col = getQueryParam('col');
-                showRow(row, col);
-                _showDashboard();
-                // resolve the grid promise
-                grid_ready.resolve();
+            // initialize the layout
+            var layout_ready = true, showBackground = true;
+            if (Urth.layout === 'grid') {
+                var row = getQueryParam('row');
+                if (!row) {
+                    layout_ready = initGrid();
+                } else {
+                    showBackground = false;
+                    showRow(row, getQueryParam('col')); // show only given row/column
+                }
             }
+            $('body').toggleClass('dashboard-view', showBackground);
 
-            // we're fully initialized when both grid and thebe
-            // are initialized
-            return $.when(grid_ready, thebe_ready);
+            // we're fully initialized when both grid and thebe are initialized
+            return $.when(layout_ready, thebe_ready).then(_showDashboard);
         },
 
         executeAll: function() {
