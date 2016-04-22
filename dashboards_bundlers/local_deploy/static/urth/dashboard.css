@@ -12,17 +12,11 @@ body {
     margin: 0;
 }
 
-body.grid-view {
-    background-color: #606672;
-    background-image: url(img/noisy-texture.png);
-}
-
 #outer-dashboard {
     position: relative;
     padding: 15px 0;
     background-color: white;
     min-height: 100vh;
-    box-shadow: 0 0 59px 19px rgba(0, 0, 0, 0.5);
 }
 
 /* busy indicator */
@@ -31,7 +25,7 @@ body.grid-view {
     position: fixed;
     top: -8px;
     height: 8px;
-    width: inherit;
+    width: 100%;
     border-radius: 0;
     /* change 'visibility' after 'top' transition is done */
     transition: top 0.3s, visibility 0s linear 0.3s;
@@ -76,6 +70,7 @@ body .kernel_controls {
     line-height: 20px;
 }
 
+/* Grid layout */
 #dashboard-container .grid-stack-item.rendered_html {
     /*
         computed in dashboard.js:
@@ -83,11 +78,9 @@ body .kernel_controls {
         padding: (margin/2)px  (margin/2 + 6)px;
      */
 }
-
-#dashboard-container > :not(.grid-stack-item) {
+#dashboard-container[data-dashboard-layout="grid"] > :not(.grid-stack-item) {
     display: none;
 }
-
 .show-row-only {
     background: none;
 }
@@ -105,6 +98,14 @@ body .kernel_controls {
 .show-row-only.single-cell .grid-stack-item {
     width: 100%;
     height: 100%;
+}
+
+/* Report layout */
+#dashboard-container .report-cell {
+    margin-bottom: 1em;
+}
+#dashboard-container .report-cell.dashboard-hidden {
+    display: none;
 }
 
 /* remove cell selection rectangle (4.x) */
