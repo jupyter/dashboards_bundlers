@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.5.0 (2016-04-18)
+## 0.5.0 (2016-XX-XX)
 
 * Add bundler to download a zip for deployment on `jupyter-incubator/dashboards_server`
 * Improve documentation about bundling associated assets
