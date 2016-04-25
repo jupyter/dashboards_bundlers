@@ -86,7 +86,7 @@ The first converts your notebook to a PHP web application and zips it up with a 
 5. Unzip the download.
 6. Refer to the `README.md` in the unzipped folder for further instructions.
 
-**Note:** The PHP application uses [Thebe](https://github.com/oreillymedia/thebe) which provides users with unfettered access to the backend kernel. Use it for public examples or in secure environments.
+**Note:** The PHP application uses [Thebe](https://github.com/oreillymedia/thebe). Thebe provides unfettered access to a kernel in your notebook server. Use it for public examples or in secure environments. Thebe also bundles a copy of `ipywidgets` 4.1.x with it. It will only work in environments with a 4.1.x compatible version of ipywidgets.
 
 Ultimately, this option should go away as the [Jupyter Dashboard Server](https://github.com/jupyter-incubator/dashboards_server) matures. See the [dashboard deployment roadmap](https://github.com/jupyter-incubator/dashboards/wiki/Deployment-Roadmap) and [deployed dashboard threat analysis](https://github.com/jupyter-incubator/dashboards/wiki/Deployed-Dashboard-Threat-Analysis) for details.
 
@@ -100,7 +100,7 @@ The second bundler converts your notebook to a static HTML web application and d
 4. Click *File &rarr; Deploy as &rarr; Local Dashboard*.
 5. Enjoy your dashboard after the redirect.
 
-**Note:** The static HTML web application also uses [Thebe](https://github.com/oreillymedia/thebe) which provides unfettered access to a kernel in your notebook server. Use it for public examples or in secure environments.
+**Note:** The static HTML web application uses [Thebe](https://github.com/oreillymedia/thebe). Thebe provides unfettered access to a kernel in your notebook server. Use it for public examples or in secure environments. Thebe also bundles a copy of `ipywidgets` 4.1.x with it. It will only work in environments with a 4.1.x compatible version of ipywidgets.
 
 Ultimately, this option should go away as the [Jupyter Dashboard Server](https://github.com/jupyter-incubator/dashboards_server) matures. See the [dashboard deployment roadmap](https://github.com/jupyter-incubator/dashboards/wiki/Deployment-Roadmap) and [deployed dashboard threat analysis](https://github.com/jupyter-incubator/dashboards/wiki/Deployed-Dashboard-Threat-Analysis) for details.
 
