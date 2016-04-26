@@ -31,19 +31,16 @@
             {%- set maxColumns = nb.metadata.urth.dashboard.maxColumns or 12 -%}
             {%- set cellMargin = nb.metadata.urth.dashboard.cellMargin or 10-%}
             {%- set defaultCellHeight = nb.metadata.urth.dashboard.defaultCellHeight or 20 -%}
-            {%- set useFallbackValues = false -%}
+            {%- set hasNotebookMetadata = true -%}
+            Urth.maxColumns = {{maxColumns}};
+            Urth.cellMargin = {{cellMargin}};
+            Urth.defaultCellHeight = {{defaultCellHeight}};
         {%- else -%}
-            {%- set dashboardLayout = "grid" -%}
-            {%- set maxColumns = 12 -%}
-            {%- set cellMargin = 10 -%}
-            {%- set cellRowSpan = 4 -%}
-            {%- set defaultCellHeight = 20 -%}
-            {%- set useFallbackValues = true -%}
+            {# If the notebook has never been touched by the layout editor, assume report mode #}
+            {%- set dashboardLayout = "report" -%}
+            {%- set hasNotebookMetadata = false -%}
         {%- endif -%}
         Urth.layout = "{{dashboardLayout}}";
-        Urth.maxColumns = {{maxColumns}};
-        Urth.cellMargin = {{cellMargin}};
-        Urth.defaultCellHeight = {{defaultCellHeight}};
     </script>
     <script data-main="./static/main.js" src="./static/bower_components/requirejs/require.js"></script>
 
@@ -70,28 +67,26 @@
     <div id="dashboard-container" class="container" data-dashboard-layout="{{dashboardLayout}}">
         {%- for cell in nb.cells -%}
             {%- if (cell.metadata is defined) and (cell.metadata.urth is defined) and (cell.metadata.urth.dashboard is defined) -%}
+                {# Use cell layout metadata if available #}
                 {%- set hidden = cell.metadata.urth.dashboard.hidden -%}
                 {%- set layout = cell.metadata.urth.dashboard.layout -%}
+            {%- elif not hasNotebookMetadata -%}
+                {# If no notebook metadata available, we're showing everything in a default report mode #}
+                {%- set hidden = false -%}
+            {%- else -%}
+                {# If the notebook has dashboard metadata, but the cell is missing metadata, hide the cell because it's never been seen in 
+                   the dashboard layout mode. #}
+                {%- set hidden = true -%}
+                {%- set layout = none -%}
             {%- endif -%}
-            {%- if (dashboardLayout == "grid") and (layout == none) -%}
-                {%- if (useFallbackValues) -%}
-                    {%- set hidden = false -%}
-                    {%- set layout = { 'width': maxColumns, 'height': cellRowSpan, 'row': 0, 'col': 0 } -%}
-                {%- else -%}
-                    {%- set hidden = none -%}
-                    {%- set layout = none -%}
-                {%- endif -%}
-            {%- endif -%}
+            
             {# Thebe doesn't wrap HTML-converted cells with same structure as seen in Notebook,
                resulting in different styling. Adding necessary classes to match styles. #}
             {%- set textClass = "rendered_html" if (cell.cell_type is defined) and (cell.cell_type == "markdown") else "" -%}
             <div {% if (dashboardLayout == "report") -%}
-                    class="report-cell {{textClass}} {%- if (hidden) -%} dashboard-hidden{%- endif -%}"
+                    class="report-cell {{textClass}} {%- if (hidden) -%} dashboard-hidden {%- endif -%}"
                 {%- else -%}
-                    {%- if (useFallbackValues) -%}
-                        data-gs-auto-position='true'
-                    {%- endif -%}
-                    {%- if (hidden != none) and (not hidden) and (layout != none) -%}
+                    {%- if not hidden and layout -%}
                         data-gs-x={{layout.col}} data-gs-y={{layout.row}}
                         data-gs-width={{layout.width}} data-gs-height={{layout.height}}
                         class="grid-stack-item {{textClass}}"
