@@ -1,10 +1,11 @@
 # Changelog
 
-## 0.5.0 (2016-XX-XX)
+## 0.5.0 (2016-04-26)
 
+* Add support for report layout in Thebe-based deployments
 * Add bundler to download a zip for deployment on `jupyter-incubator/dashboards_server`
 * Improve documentation about bundling associated assets
-* Make compatible with Jupyter Notebook 4.2
+* Make compatible with Jupyter Notebook 4.0.x to 4.2.x
 
 ## 0.4.0 (2016-03-04)
 
