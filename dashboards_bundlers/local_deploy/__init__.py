@@ -172,7 +172,7 @@ def bundle_declarative_widgets(output_path, notebook_file, widget_folder='static
         return
     
     # Directory of declarative widgets extension
-    widgets_dir = get_extension_path('urth_widgets')
+    widgets_dir = get_extension_path('declarativewidgets') or get_extension_path('urth_widgets')
     if widgets_dir is None:
         raise web.HTTPError(500, 'Missing jupyter_declarativewidgets extension')
 
