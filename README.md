@@ -28,11 +28,6 @@ It is also has close ties to [jupyter-incubator/declarativewidgets](https://gith
 * `jupyter_cms>=0.5.0` for bundling options
 * `jupyter_dashboards>=0.4.0` for local deploy and download options
 
-## Compatibility
-
-* `jupyter_declarativewidgets>=0.4.0` for deploying dashboards with declarative widgets
-* `jupyter-incubator/dashboards_server>=0.4.0` for dashboard server deployment option with declarative widgets
-
 ## Install It
 
 In Jupyter Notebook 4.2, you can install and activate all features of the extension in two commands like so:
@@ -75,35 +70,6 @@ pip uninstall dashboards_bundlers
 
 Currently, there are four bundlers available in this package.
 
-### Download &rarr; PHP Dashboard bundle (.zip)
-
-The first converts your notebook to a PHP web application and zips it up with a Dockerfile and Cloud Foundry manifest. To use it:
-
-1. Write a notebook.
-2. Define a dashboard layout using the `jupyter_dashboards` extension.
-3. If the notebook requires any frontend assets (e.g., CSS files), [associate them with the notebook](https://github.com/jupyter-incubator/contentmanagement/blob/master/etc/notebooks/associations_demo/associations_demo.ipynb).
-4. Click *File &rarr; Download as &rarr; PHP Dashboard bundle (.zip)*.
-5. Unzip the download.
-6. Refer to the `README.md` in the unzipped folder for further instructions.
-
-**Note:** The PHP application uses [Thebe](https://github.com/oreillymedia/thebe). Thebe provides unfettered access to a kernel in your notebook server. Use it for public examples or in secure environments. Thebe also bundles a copy of `ipywidgets` 4.1.x with it. It will only work in environments with a 4.1.x compatible version of ipywidgets.
-
-Ultimately, this option should go away as the [Jupyter Dashboard Server](https://github.com/jupyter-incubator/dashboards_server) matures. See the [dashboard deployment roadmap](https://github.com/jupyter-incubator/dashboards/wiki/Deployment-Roadmap) and [deployed dashboard threat analysis](https://github.com/jupyter-incubator/dashboards/wiki/Deployed-Dashboard-Threat-Analysis) for details.
-
-### Deploy as &rarr; Local dashboard
-
-The second bundler converts your notebook to a static HTML web application and deploys it to your Jupyter Notebook server for local use. To use it:
-
-1. Write a notebook.
-2. Define a dashboard layout using the `jupyter_dashboards` extension.
-3. If the notebook requires any frontend assets (e.g., CSS files), [associate them with the notebook](https://github.com/jupyter-incubator/contentmanagement/blob/master/etc/notebooks/associations_demo/associations_demo.ipynb).
-4. Click *File &rarr; Deploy as &rarr; Local Dashboard*.
-5. Enjoy your dashboard after the redirect.
-
-**Note:** The static HTML web application uses [Thebe](https://github.com/oreillymedia/thebe). Thebe provides unfettered access to a kernel in your notebook server. Use it for public examples or in secure environments. Thebe also bundles a copy of `ipywidgets` 4.1.x with it. It will only work in environments with a 4.1.x compatible version of ipywidgets.
-
-Ultimately, this option should go away as the [Jupyter Dashboard Server](https://github.com/jupyter-incubator/dashboards_server) matures. See the [dashboard deployment roadmap](https://github.com/jupyter-incubator/dashboards/wiki/Deployment-Roadmap) and [deployed dashboard threat analysis](https://github.com/jupyter-incubator/dashboards/wiki/Deployed-Dashboard-Threat-Analysis) for details.
-
 ### Download as &rarr; Jupyter Dashboards Server bundle (.zip)
 
 The third bundles your notebook and any associated frontend assets into a zip file which you can manually deploy on a [Jupyter Dashboards Server](https://github.com/jupyter-incubator/dashboards_server). To use it:
@@ -114,6 +80,11 @@ The third bundles your notebook and any associated frontend assets into a zip fi
 4. Click *File &rarr; Download as &rarr; Jupyter Dashboards Server bundle (.zip)*.
 5. Install  [jupyter-incubator/dashboards_server](https://github.com/jupyter-incubator/dashboards_server) by following the project README.
 5. Unzip the bundle in the `data/` directory of the Jupyter Dashboard Server and run it.
+
+This bundler is compatible with:
+
+* `jupyter_declarativewidgets>=0.5.0` when deploying dashboards with declarative widgets
+* `ipywidgets>=5.0.0,<6.0.0` when deploying dashboards with ipywidgets
 
 **Note:** We're working on an npm package for the dashboard server to make it easier to start an instance. For now, you'll need to clone the repository and follow the dev setup instructions.
 
@@ -132,7 +103,51 @@ The fourth directly sends your notebook and any associated frontend assets to a 
 5. Click *File &rarr; Deploy as &rarr; Dashboard on Jupyter Dashboard Server*.
 6. Enjoy your dashboard after the redirect.
 
+This bundler is compatible with:
+
+* `jupyter_declarativewidgets>=0.5.0` when deploying dashboards with declarative widgets
+* `ipywidgets>=5.0.0,<6.0.0` when deploying dashboards with ipywidgets
+
 Ultimately, this option should become the primary reference implementation of how to enable one-click deployment of notebooks as dashboards. See the [dashboard deployment roadmap](https://github.com/jupyter-incubator/dashboards/wiki/Deployment-Roadmap) and [deployed dashboard threat analysis](https://github.com/jupyter-incubator/dashboards/wiki/Deployed-Dashboard-Threat-Analysis) for details.
+
+### DEPRECATED: Download &rarr; PHP Dashboard bundle (.zip) 
+
+The first converts your notebook to a PHP web application and zips it up with a Dockerfile and Cloud Foundry manifest. To use it:
+
+1. Write a notebook.
+2. Define a dashboard layout using the `jupyter_dashboards` extension.
+3. If the notebook requires any frontend assets (e.g., CSS files), [associate them with the notebook](https://github.com/jupyter-incubator/contentmanagement/blob/master/etc/notebooks/associations_demo/associations_demo.ipynb).
+4. Click *File &rarr; Download as &rarr; PHP Dashboard bundle (.zip)*.
+5. Unzip the download.
+6. Refer to the `README.md` in the unzipped folder for further instructions.
+
+This bundler is compatible with:
+
+* `jupyter_declarativewidgets>=0.4.0,<0.5.0` when deploying dashboards with declarative widgets
+* `ipywidgets>=4.1.0,<0.5.0` when deploying dashboards with ipywidgets
+
+**Note:** The PHP application uses [Thebe](https://github.com/oreillymedia/thebe). Thebe provides unfettered access to a kernel in your notebook server. Use it for public examples or in secure environments. Thebe also bundles a copy of `ipywidgets` 4.1.x with it. It will only work in environments with a 4.1.x compatible version of ipywidgets.
+
+Ultimately, this option should go away as the [Jupyter Dashboard Server](https://github.com/jupyter-incubator/dashboards_server) matures. See the [dashboard deployment roadmap](https://github.com/jupyter-incubator/dashboards/wiki/Deployment-Roadmap) and [deployed dashboard threat analysis](https://github.com/jupyter-incubator/dashboards/wiki/Deployed-Dashboard-Threat-Analysis) for details.
+
+### DEPRECATED: Deploy as &rarr; Local dashboard
+
+The second bundler converts your notebook to a static HTML web application and deploys it to your Jupyter Notebook server for local use. To use it:
+
+1. Write a notebook.
+2. Define a dashboard layout using the `jupyter_dashboards` extension.
+3. If the notebook requires any frontend assets (e.g., CSS files), [associate them with the notebook](https://github.com/jupyter-incubator/contentmanagement/blob/master/etc/notebooks/associations_demo/associations_demo.ipynb).
+4. Click *File &rarr; Deploy as &rarr; Local Dashboard*.
+5. Enjoy your dashboard after the redirect.
+
+This bundler is compatible with:
+
+* `jupyter_declarativewidgets>=0.4.0,<0.5.0` when deploying dashboards with declarative widgets
+* `ipywidgets>=4.1.0,<0.5.0` when deploying dashboards with ipywidgets
+
+**Note:** The static HTML web application uses [Thebe](https://github.com/oreillymedia/thebe). Thebe provides unfettered access to a kernel in your notebook server. Use it for public examples or in secure environments. Thebe also bundles a copy of `ipywidgets` 4.1.x with it. It will only work in environments with a 4.1.x compatible version of ipywidgets.
+
+Ultimately, this option should go away as the [Jupyter Dashboard Server](https://github.com/jupyter-incubator/dashboards_server) matures. See the [dashboard deployment roadmap](https://github.com/jupyter-incubator/dashboards/wiki/Deployment-Roadmap) and [deployed dashboard threat analysis](https://github.com/jupyter-incubator/dashboards/wiki/Deployed-Dashboard-Threat-Analysis) for details.
 
 ## Caveats
 
