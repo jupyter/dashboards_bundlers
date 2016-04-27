@@ -84,7 +84,7 @@
                resulting in different styling. Adding necessary classes to match styles. #}
             {%- set textClass = "rendered_html" if (cell.cell_type is defined) and (cell.cell_type == "markdown") else "" -%}
             <div {% if (dashboardLayout == "report") -%}
-                    class="report-cell {{textClass}} {%- if (hidden) -%} dashboard-hidden {%- endif -%}"
+                    class="report-cell {{textClass}} {{'dashboard-hidden' if hidden}} "
                 {%- else -%}
                     {%- if not hidden and layout -%}
                         data-gs-x={{layout.col}} data-gs-y={{layout.row}}
