@@ -77,9 +77,20 @@ dev-python3:
 	$(NOTEBOOK_SERVER) \
 		$(DEV_REPO) bash -c 'python --version && $(EXT_DEV_SETUP) && $(CMD)'
 
+bash: ## Run a bash shell in the dev container
+	$(NOTEBOOK_SERVER) $(DEV_REPO) bash -c '$(EXT_DEV_SETUP) && bash'
+
+dev-with-decl-widgets: CMD?=start-notebook.sh
+dev-with-decl-widgets: ## Same as dev but w/ declarative widgets (no bower)
+	$(NOTEBOOK_SERVER) \
+		$(DEV_REPO) bash -c 'pip install requests && \
+			jupyter declarativewidgets install --user --symlink --overwrite && \
+			jupyter declarativewidgets activate && \
+		 	$(EXT_DEV_SETUP) && $(CMD)'
+
 dev-with-dashboard-server: CMD?=start-notebook.sh
 dev-with-dashboard-server: DASHBOARD_REDIRECT_URL?=$$(docker-machine ip $$(docker-machine active))
-dev-with-dashboard-server: ## Same as dev but Docker link to dashboards-server container
+dev-with-dashboard-server: ## Same as dev but w/ decl widgets and Docker link to dashboards-server container
 	$(NOTEBOOK_SERVER) \
 		--link dashboard-server:dashboard-server \
 		-e DASHBOARD_SERVER_URL=http://dashboard-server:3000 \
