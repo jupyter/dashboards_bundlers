@@ -16,10 +16,10 @@ It is also has close ties to [jupyter-incubator/declarativewidgets](https://gith
 
 ## What It Gives You
 
-* *File &rarr; Download as &rarr; PHP Dashboard bundle (.zip)* menu item to download the current notebook as a PHP application using [Thebe](https://github.com/oreillymedia/thebe) that you can deploy and configure.
-* *File &rarr; Deploy as &rarr; Local dashboard* menu item to deploy the current notebook as a [Thebe](https://github.com/oreillymedia/thebe) application within the same Jupyter Notebook server instance.
 * *File &rarr; Download as &rarr; Jupyter Dashboards Server bundle (.zip)* menu item to download the current notebook and its associated assets for manual deployment on a [Jupyter Dashboards](https://github.com/jupyter-incubator/dashboards_server) server.
 * *File &rarr; Deploy as &rarr; Dashboard on Jupyter Dashboards Server* menu item to deploy the current notebook and its associated assets as a dashboard on a target [Jupyter Dashboards](https://github.com/jupyter-incubator/dashboards_server) server.
+* *File &rarr; Download as &rarr; PHP Dashboard bundle (.zip)* menu item to download the current notebook as a PHP application using [Thebe](https://github.com/oreillymedia/thebe) that you can deploy and configure.
+* *File &rarr; Deploy as &rarr; Local dashboard* menu item to deploy the current notebook as a [Thebe](https://github.com/oreillymedia/thebe) application within the same Jupyter Notebook server instance.
 
 ## Prerequisites
 
@@ -123,8 +123,8 @@ The first converts your notebook to a PHP web application and zips it up with a 
 
 This bundler is compatible with:
 
-* `jupyter_declarativewidgets>=0.4.0,<0.5.0` when deploying dashboards with declarative widgets
-* `ipywidgets>=4.1.0,<0.5.0` when deploying dashboards with ipywidgets
+* `jupyter_declarativewidgets>=0.5.0,<0.6.0` when deploying dashboards with declarative widgets
+* `ipywidgets>=4.0.3,<5.0.0` when deploying dashboards with ipywidgets
 
 **Note:** The PHP application uses [Thebe](https://github.com/oreillymedia/thebe). Thebe provides unfettered access to a kernel in your notebook server. Use it for public examples or in secure environments. Thebe also bundles a copy of `ipywidgets` 4.1.x with it. It will only work in environments with a 4.1.x compatible version of ipywidgets.
 
@@ -142,8 +142,8 @@ The second bundler converts your notebook to a static HTML web application and d
 
 This bundler is compatible with:
 
-* `jupyter_declarativewidgets>=0.4.0,<0.5.0` when deploying dashboards with declarative widgets
-* `ipywidgets>=4.1.0,<0.5.0` when deploying dashboards with ipywidgets
+* `jupyter_declarativewidgets>=0.5.0,<0.6.0` when deploying dashboards with declarative widgets
+* `ipywidgets>=4.0.3,<5.0.0` when deploying dashboards with ipywidgets
 
 **Note:** The static HTML web application uses [Thebe](https://github.com/oreillymedia/thebe). Thebe provides unfettered access to a kernel in your notebook server. Use it for public examples or in secure environments. Thebe also bundles a copy of `ipywidgets` 4.1.x with it. It will only work in environments with a 4.1.x compatible version of ipywidgets.
 
