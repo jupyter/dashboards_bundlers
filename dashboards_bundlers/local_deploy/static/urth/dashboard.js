@@ -30,9 +30,10 @@ define(['jquery', 'Thebe', 'urth-common/error-log'], function($, Thebe, ErrorLog
             load_css: false
         });
 
+        // Shims for libs that think they are in the notebook environment
         window.IPython.notebook = thebe.notebook;
-        //  A Hack for exposing the base_url to the urth widgets
-        thebe.notebook.base_url = '/';
+        window.Jupyter = window.IPython;
+        thebe.notebook.base_url = 'static/';
 
         // show a busy indicator when communicating with kernel
         var debounced;
