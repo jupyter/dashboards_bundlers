@@ -41,34 +41,35 @@ requirejs(['urth/dashboard'], function(Dashboard) {
         var IPython = window.IPython;
         var widgetManager = IPython.notebook.kernel.widget_manager;
         
-        // Ugly, because we're special-casing declarative widget support, but
-        // they need to be pre-loaded onto the page before we begin executing
-        // any notebook code that depends on them.
+        // Ugly shims for declarative widgets follow ...
+        
         define('jupyter-js-widgets', function() {
-            // All hail the monkey patch: override new_widget so that the 
+            // WidgetModel is needed by declarative widgets and is one of the 
+            // registered model types, so return this list
+            return widgetManager.constructor._model_types;
+        });
+
+        // Now try to load the decl widgets
+        requirejs(['urth_widgets/js/init/init',
+                   'urth_widgets/js/widgets/DeclWidgetModel'], function(widgetInit, modDeclWidgetModel) {
+
+            // All hail the monkey patch: Override new_widget so that the 
             // registry is used to fetch DeclWidgetModel instead of 
             // almond-flavored requirejs from Thebe which we can't configure
-            var old_new_widget = IPython.notebook.kernel.widget_manager.new_widget;
+            var old_new_widget = widgetManager.new_widget;
             widgetManager.new_widget = function(options) {
                 if(options.model_module && options.model_module.indexOf('jupyter-decl-widgets') === 0) {
                     options.model_module = null;
                 }
                 // Invoke the original
-                return old_new_widget.apply(IPython.notebook.kernel.widget_manager, arguments);
+                return old_new_widget.apply(widgetManager, arguments);
             };
 
-            // WidgetModel is needed by declarative widgets and is one of the 
-            // registered model types, so return this list
-            return IPython.notebook.kernel.widget_manager.constructor._model_types;
-        });
-
-        // Now try to load the widgets
-        requirejs(['urth_widgets/js/init/init',
-                   'urth_widgets/js/widgets/DeclWidgetModel'], function(widgetInit, modDeclWidgetModel) {
             // Directly inject the declarative widget model since we can't 
             // configure the requirejs search path built into thebe
             widgetManager.constructor.register_widget_model('DeclWidgetModel', modDeclWidgetModel.DeclWidgetModel);
-            // Initialize the declarative widgets
+            
+            // Now initialize the declarative widgets
             widgetInit({
                 namespace: IPython,
                 events: IPython.notebook.events
