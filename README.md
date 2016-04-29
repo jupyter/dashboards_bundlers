@@ -97,7 +97,7 @@ The fourth directly sends your notebook and any associated frontend assets to a 
 0. Run an instance of the Jupyter Dashboards Server by following the instructions in the [jupyter-incubator/dashboards_server](https://github.com/jupyter-incubator/dashboards_server) project README.
 1. Set the following environment variables before launching your Jupyter Notebook server with the bundler extensions installed.
     * `DASHBOARD_SERVER_URL` - protocol, hostname, and port of the dashboard server to which to send dashboard notebooks
-    * `DASHBOARD_REDIRECT_URL` (optional) - protocol, hostname, and port to use when redirecting the user's browser after upload if different from `DASHBOARD_SERVER_URL`
+    * `DASHBOARD_REDIRECT_URL` (optional) - protocol, hostname, and port to use when redirecting the user's browser after upload if different from `DASHBOARD_SERVER_URL` and if upload response has no link
     * `DASHBOARD_SERVER_AUTH_TOKEN` (optional) - upload token required by the dashboard server
 2. Write a notebook.
 3. Define a dashboard layout using the `jupyter_dashboards` extension.
@@ -112,7 +112,7 @@ This bundler is compatible with:
 
 Ultimately, this option should become the primary reference implementation of how to enable one-click deployment of notebooks as dashboards. See the [dashboard deployment roadmap](https://github.com/jupyter-incubator/dashboards/wiki/Deployment-Roadmap) and [deployed dashboard threat analysis](https://github.com/jupyter-incubator/dashboards/wiki/Deployed-Dashboard-Threat-Analysis) for details.
 
-### DEPRECATED: Download &rarr; PHP Dashboard bundle (.zip) 
+### DEPRECATED: Download &rarr; PHP Dashboard bundle (.zip)
 
 The first converts your notebook to a PHP web application and zips it up with a Dockerfile and Cloud Foundry manifest. To use it:
 

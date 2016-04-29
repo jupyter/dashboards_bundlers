@@ -92,14 +92,22 @@ def send_file(file_path, dashboard_name, handler):
             if result.status_code >= 400:
                 raise web.HTTPError(result.status_code)
 
-        # Redirect for client might be different from internal upload URL
-        redirect_server = os.getenv('DASHBOARD_REDIRECT_URL')
-        if redirect_server:
-            redirect_root = redirect_server.format(hostname=hostname,
-                port=port, protocol=protocol)
+        # Redirect to link specified in response body
+        res_body = result.json()
+        if 'link' in res_body:
+            redirect_link = res_body['link']
         else:
-            redirect_root = dashboard_server
-        handler.redirect(url_path_join(redirect_root, VIEW_ENDPOINT, escape.url_escape(dashboard_name, False)))
+            # Compute redirect link using environment variables
+            # First try redirect URL as it might be different from internal upload URL
+            redirect_server = os.getenv('DASHBOARD_REDIRECT_URL')
+            if redirect_server:
+                redirect_root = redirect_server.format(hostname=hostname,
+                    port=port, protocol=protocol)
+            else:
+                redirect_root = dashboard_server
+
+            redirect_link = url_path_join(redirect_root, VIEW_ENDPOINT, escape.url_escape(dashboard_name, False))
+        handler.redirect(redirect_link)
     else:
         access_log.debug('Can not deploy, DASHBOARD_SERVER_URL not set')
         raise web.HTTPError(500, log_message='No dashboard server configured')
