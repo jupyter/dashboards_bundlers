@@ -1,8 +1,12 @@
 # Changelog
 
+## 0.7.0 (2016-04-28)
+
+* Fix local deploy compatibility with `jupyter-incubator/declarativewidgets>=0.5.0`
+
 ## 0.6.0 (2016-04-27)
 
-* Fix compatibility with `jupyter-incubator/declarativewidgets>=0.5.0`
+* Fix dashboard server bundle compatibility with `jupyter-incubator/declarativewidgets>=0.5.0`
 * Deprecate bundlers that rely on Thebe
 
 ## 0.5.0 (2016-04-26)
