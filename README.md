@@ -30,6 +30,8 @@ It is also has close ties to [jupyter-incubator/declarativewidgets](https://gith
 
 ## Install It
 
+First, make sure you have satisfied the prerequisites above, including any steps required to install and activate the `jupyter_dashboards` and `jupyter_cms` Notebook extensions.
+
 In Jupyter Notebook 4.2, you can install and activate all features of the extension in two commands like so:
 
 ```bash
