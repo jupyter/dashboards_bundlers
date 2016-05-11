@@ -124,3 +124,8 @@ body .kernel_controls {
 .urth-dashboard .container .cell .thebe-message {
     display: none !important;
 }
+
+/* Hide declarative widgets errors in all dashboard views */
+.urth-dashboard .cell .urth-widget-error {
+    display: none;
+}
