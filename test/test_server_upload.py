@@ -9,22 +9,29 @@ import dashboards_bundlers.server_upload as converter
 import jupyter_cms
 from tornado import web
 
+dashboard_link = 'http://notebook-server:3000/dashboards/test'
+
 class MockResult(object):
-    def __init__(self, status_code):
+    def __init__(self, status_code, include_link=True):
         self.status_code = status_code
+        if (include_link):
+            self.json = lambda : { 'link': dashboard_link }
+        else:
+            self.json = lambda : {}
 
 class MockPost(object):
-    def __init__(self, status_code):
+    def __init__(self, status_code, include_result_link=True):
         self.args = None
         self.kwargs = None
         self.status_code = status_code
+        self.include_result_link = include_result_link
 
     def __call__(self, *args, **kwargs):
         if self.args or self.kwargs:
             raise RuntimeError('MockPost already invoked')
         self.args = args
         self.kwargs = kwargs
-        return MockResult(self.status_code)
+        return MockResult(self.status_code, self.include_result_link)
 
 class MockZipPost(object):
     '''
@@ -83,8 +90,7 @@ class TestServerUpload(unittest.TestCase):
         self.assertEqual(args[0], 'http://dashboard-server/_api/notebooks/no_imports')
         self.assertTrue(kwargs['files']['file'])
         self.assertEqual(kwargs['headers'], {})
-        self.assertEqual(handler.last_redirect,
-            'http://dashboard-server/dashboards/no_imports')
+        self.assertEqual(handler.last_redirect, dashboard_link)
 
     def test_upload_zip(self):
         '''
@@ -101,8 +107,7 @@ class TestServerUpload(unittest.TestCase):
         self.assertEqual(args[0], 'http://dashboard-server/_api/notebooks/some')
         self.assertTrue(kwargs['files']['file'])
         self.assertEqual(kwargs['headers'], {})
-        self.assertEqual(handler.last_redirect,
-            'http://dashboard-server/dashboards/some')
+        self.assertEqual(handler.last_redirect, dashboard_link)
         self.assertTrue('index.ipynb' in converter.requests.post.zipped_files)
         self.assertTrue('some.csv' in converter.requests.post.zipped_files)
 
@@ -125,11 +130,11 @@ class TestServerUpload(unittest.TestCase):
 
         args = converter.requests.post.args
         self.assertEqual(args[0], 'https://notebook-server:8889/_api/notebooks/no_imports')
-        self.assertEqual(handler.last_redirect,
-            'https://notebook-server:8889/dashboards/no_imports')
+        self.assertEqual(handler.last_redirect, dashboard_link)
 
-    def test_redirect(self):
+    def test_redirect_fallback(self):
         '''Should redirect to the given URL'''
+        converter.requests.post = MockPost(200, False)
         os.environ['DASHBOARD_SERVER_URL'] = '{protocol}://{hostname}:8889'
         os.environ['DASHBOARD_REDIRECT_URL'] = 'http://{hostname}:3000'
         handler = MockHandler('notebook-server:8888', 'https')
