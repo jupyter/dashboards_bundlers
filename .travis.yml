@@ -5,14 +5,12 @@ python:
     - 3.4
     - 3.5
 install:
-    - pip install "notebook==4.1" requests jupyter_cms jupyter_dashboards
+    - pip install "notebook==4.2" requests jupyter_cms jupyter_dashboards
 before_script:
     - mkdir -p /home/travis/.jupyter/nbconfig
     - jupyter notebook --generate-config
-    - jupyter cms install --user --symlink
-    - jupyter cms activate
-    - jupyter dashboards install --user --symlink
-    - jupyter dashboards activate
+    - jupyter cms quick-setup --sys-prefix
+    - jupyter dashboards quick-setup --sys-prefix
 script:
     - python setup.py sdist
     - pip install --no-use-wheel --no-deps dist/*.tar.gz

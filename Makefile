@@ -13,14 +13,14 @@ DASHBOARDS_PACKAGE?=jupyter_dashboards
 WIDGETS_PACKAGE?=jupyter_declarativewidgets
 
 # Using pyspark notebook to get both a python2 and python3 env
-REPO:=jupyter/pyspark-notebook:0017b56d93c9
-DEV_REPO:=jupyter/pyspark-notebook-db-dev:0017b56d93c9
+REPO:=jupyter/pyspark-notebook:8015c88c4b11
+DEV_REPO:=jupyter/pyspark-notebook-db-dev:8015c88c4b11
 PYTHON2_SETUP:=source activate python2
 
 define EXT_DEV_SETUP
 	pushd /src && \
 	pip install --no-deps -e . && \
-	jupyter dashboards_bundlers activate && \
+	jupyter dashboards_bundlers quick-setup --sys-prefix && \
 	popd
 endef
 
@@ -42,20 +42,18 @@ help:
 build: ## Build the dev Docker image
 	@-docker rm -f dev-build
 	@docker run -it --name dev-build \
-		$(REPO) bash -c 'pip install --no-binary :all: $(CMS_PACKAGE) $(DASHBOARDS_PACKAGE) $(WIDGETS_PACKAGE) && \
-			jupyter cms install --user --symlink --overwrite && \
-			jupyter dashboards install --user --symlink --overwrite && \
-			jupyter cms activate && \
-			jupyter dashboards activate'
+		$(REPO) bash -c 'pip install requests $(CMS_PACKAGE) $(DASHBOARDS_PACKAGE) $(WIDGETS_PACKAGE) && \
+			jupyter cms quick-setup --sys-prefix && \
+			jupyter declarativewidgets quick-setup --sys-prefix && \
+			jupyter dashboards quick-setup --sys-prefix'
 	@docker commit dev-build $(DEV_REPO)
 	@-docker rm -f dev-build
 	@docker run -it --name dev-build \
 		$(DEV_REPO) bash -c '$(PYTHON2_SETUP) && \
-			pip install --no-binary :all: requests $(CMS_PACKAGE) $(DASHBOARDS_PACKAGE) $(WIDGETS_PACKAGE) && \
-			jupyter cms install --user --symlink --overwrite && \
-			jupyter dashboards install --user --symlink --overwrite && \
-			jupyter cms activate && \
-			jupyter dashboards activate'
+			pip install requests $(CMS_PACKAGE) $(DASHBOARDS_PACKAGE) $(WIDGETS_PACKAGE) && \
+			jupyter cms quick-setup --sys-prefix && \
+			jupyter declarativewidgets quick-setup --sys-prefix && \
+			jupyter dashboards quick-setup --sys-prefix'
 	@docker commit dev-build $(DEV_REPO)
 	@-docker rm -f dev-build
 
@@ -80,25 +78,14 @@ dev-python3:
 bash: ## Run a bash shell in the dev container
 	$(NOTEBOOK_SERVER) $(DEV_REPO) bash -c '$(EXT_DEV_SETUP) && bash'
 
-dev-with-decl-widgets: CMD?=start-notebook.sh
-dev-with-decl-widgets: ## Same as dev but w/ declarative widgets (no bower)
-	$(NOTEBOOK_SERVER) \
-		$(DEV_REPO) bash -c 'pip install requests && \
-			jupyter declarativewidgets install --user --symlink --overwrite && \
-			jupyter declarativewidgets activate && \
-		 	$(EXT_DEV_SETUP) && $(CMD)'
-
 dev-with-dashboard-server: CMD?=start-notebook.sh
 dev-with-dashboard-server: DASHBOARD_REDIRECT_URL?=$$(docker-machine ip $$(docker-machine active))
-dev-with-dashboard-server: ## Same as dev but w/ decl widgets and Docker link to dashboards-server container
+dev-with-dashboard-server: ## Same as dev but w/ a Docker link to a dashboards-server container
 	$(NOTEBOOK_SERVER) \
 		--link dashboard-server:dashboard-server \
 		-e DASHBOARD_SERVER_URL=http://dashboard-server:3000 \
 		-e DASHBOARD_REDIRECT_URL=http://$(DASHBOARD_REDIRECT_URL):3000 \
-		$(DEV_REPO) bash -c 'pip install requests && \
-			jupyter declarativewidgets install --user --symlink --overwrite && \
-			jupyter declarativewidgets activate && \
-		 	$(EXT_DEV_SETUP) && $(CMD)'
+		$(DEV_REPO) bash -c '$(EXT_DEV_SETUP) && $(CMD)'
 
 install: CMD?=exit
 install: ## Install and activate the sdist package in the container
@@ -106,8 +93,8 @@ install: ## Install and activate the sdist package in the container
 		--user jovyan \
 		-v `pwd`:/src \
 		$(REPO) bash -c 'cd /src/dist && \
-			pip install --no-binary :all: $$(ls -1 *.tar.gz | tail -n 1) && \
-			jupyter dashboards_bundlers activate && \
+			pip install $$(ls -1 *.tar.gz | tail -n 1) && \
+			jupyter dashboards_bundlers quick-setup --sys-prefix && \
 			$(CMD)'
 
 sdist: ## Build a source distribution in dist/
