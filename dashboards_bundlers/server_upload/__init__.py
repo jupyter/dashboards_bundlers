@@ -87,8 +87,10 @@ def send_file(file_path, dashboard_name, handler):
             token = os.getenv('DASHBOARD_SERVER_AUTH_TOKEN')
             if token:
                 headers['Authorization'] = 'token {}'.format(token)
+            skip_verify = os.getenv('DASHBOARD_SERVER_NO_SSL_VERIFY', '').lower() in ['yes', 'true']
             result = requests.post(upload_url, files={'file': file_content},
-                headers=headers, timeout=60)
+                headers=headers, timeout=60, 
+                verify=not skip_verify)
             if result.status_code >= 400:
                 raise web.HTTPError(result.status_code)
 

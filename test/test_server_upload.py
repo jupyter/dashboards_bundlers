@@ -144,3 +144,20 @@ class TestServerUpload(unittest.TestCase):
         self.assertEqual(args[0], 'https://notebook-server:8889/_api/notebooks/no_imports')
         self.assertEqual(handler.last_redirect,
             'http://notebook-server:3000/dashboards/no_imports')
+
+    def test_ssl_verify(self):
+        '''Should verify SSL certificate by default.'''
+        handler = MockHandler()
+        os.environ['DASHBOARD_SERVER_URL'] = '{protocol}://{hostname}:8889'
+        converter.bundle(handler, 'test/resources/no_imports.ipynb')
+        kwargs = converter.requests.post.kwargs
+        self.assertEqual(kwargs['verify'], True)
+        
+    def test_no_ssl_verify(self):
+        '''Should skip SSL certificate verification.'''
+        os.environ['DASHBOARD_SERVER_NO_SSL_VERIFY'] = 'yes'
+        os.environ['DASHBOARD_SERVER_URL'] = '{protocol}://{hostname}:8889'
+        handler = MockHandler()
+        converter.bundle(handler, 'test/resources/no_imports.ipynb')
+        kwargs = converter.requests.post.kwargs
+        self.assertEqual(kwargs['verify'], False)
