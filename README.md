@@ -30,9 +30,9 @@ It is also has close ties to [jupyter-incubator/declarativewidgets](https://gith
 
 ## Install It
 
-First, make sure you have satisfied the prerequisites above, including any steps required to install and activate the `jupyter_dashboards` and `jupyter_cms` Notebook extensions.
+First, make sure you have satisfied the prerequisites above, including any steps required to install and activate the `jupyter_dashboards` and `jupyter_cms` Notebook extensions. Follow the steps in the [jupyter_dashboards](https://github.com/jupyter-incubator/dashboards#dashboard-layout-and-preview) and [jupyter_cms](https://github.com/jupyter-incubator/contentmanagement#install-it) READMEs.
 
-In Jupyter Notebook 4.2, you can install and activate all features of the extension in two commands like so:
+Then, in Jupyter Notebook 4.2, you can install and activate all features of the extension in two commands like so:
 
 ```bash
 # install the python package
@@ -43,7 +43,7 @@ pip install jupyter_dashboards_bundlers
 jupyter dashboards_bundlers quick-setup --sys-prefix
 ```
 
-In Jupyter Notebook 4.1 and 4.0, you install and activate the extension like so:
+Or, in Jupyter Notebook 4.1 and 4.0, you install and activate the extension like so:
 
 ```bash
 # Install the python package
