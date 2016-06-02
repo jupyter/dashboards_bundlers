@@ -13,6 +13,13 @@ from ..local_deploy import bundle_file_references, bundle_declarative_widgets
 UPLOAD_ENDPOINT = '/_api/notebooks/'
 VIEW_ENDPOINT = '/dashboards/'
 
+def skip_ssl_verification():
+    return os.getenv('DASHBOARD_SERVER_NO_SSL_VERIFY', '').lower() in ['yes', 'true']
+
+# Log a warning if SSL verification is off at the outset
+if skip_ssl_verification():
+    app_log.warn('Dashboard server SSL verification disabled')
+
 def bundle(handler, abs_nb_path):
     '''
     Uploads a notebook to a Jupyter Dashboard Server, either by itself, or
@@ -88,7 +95,8 @@ def send_file(file_path, dashboard_name, handler):
             if token:
                 headers['Authorization'] = 'token {}'.format(token)
             result = requests.post(upload_url, files={'file': file_content},
-                headers=headers, timeout=60)
+                headers=headers, timeout=60, 
+                verify=not skip_ssl_verification())
             if result.status_code >= 400:
                 raise web.HTTPError(result.status_code)
 
