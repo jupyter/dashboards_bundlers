@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.0 (2016-06-16)
+
+* Use link attribute from dashboards server to redirect after deployment if available
+* Fix declarative widget errors from appearing in local dashboard views
+* Add an option to disable SSL verification for dashboard server deployment
+* Update example notebooks for compatibility with `jupyter_declarativewidgets` 0.6.0
+
 ## 0.7.0 (2016-04-28)
 
 * Fix local deploy compatibility with `jupyter-incubator/declarativewidgets>=0.5.0`

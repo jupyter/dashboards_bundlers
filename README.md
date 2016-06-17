@@ -12,7 +12,7 @@ This repository is a portion of the `jupyter-incubator/dashboards` effort which 
 * [Bundling](https://github.com/jupyter-incubator/dashboards_bundlers) notebooks and associated assets for deployment as dashboards (**this repo**)
 * [Serving](https://github.com/jupyter-incubator/dashboards_server) notebook-defined dashboards as standalone web apps
 
-It is also has close ties to [jupyter-incubator/declarativewidgets](https://github.com/jupyter-incubator/declarativewidgets) which provides one way (but not the only way) of enabling rich interactivity in notebook-defined dashboards.
+See https://github.com/jupyter-incubator/dashboards/wiki for an overview of the entire dashboards effort.
 
 ## What It Gives You
 
