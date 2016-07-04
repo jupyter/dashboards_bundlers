@@ -20,11 +20,22 @@ def skip_ssl_verification():
 if skip_ssl_verification():
     app_log.warn('Dashboard server SSL verification disabled')
 
-def bundle(handler, abs_nb_path):
+def bundle(handler, model):
     '''
     Uploads a notebook to a Jupyter Dashboard Server, either by itself, or
     within a zip file with associated data and widget files
     '''
+    try:
+        # Noteook implementation passes ContentManager models. This bundler
+        # only works with local files anyway.
+        abs_nb_path = os.path.join(
+            handler.settings['contents_manager'].root_dir,
+            model['path']
+        )
+    except KeyError:
+        # Original jupyter_cms implementation passes absolute path on disk
+        abs_nb_path = model
+
     # Get name of notebook from filename
     notebook_basename = os.path.basename(abs_nb_path)
     notebook_name = os.path.splitext(notebook_basename)[0]

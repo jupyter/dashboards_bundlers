@@ -34,11 +34,22 @@ def get_extension_path(*parts):
         if os.path.exists(full_path):
             return full_path
 
-def bundle(handler, abs_nb_path):
+def bundle(handler, model):
     '''
     Bundles a notebook as a static web application on this Jupyter Notebook
     server and redirects the requestor there.
     '''
+    try:
+        # Noteook implementation passes ContentManager models. This bundler
+        # only works with local files anyway.
+        abs_nb_path = os.path.join(
+            handler.settings['contents_manager'].root_dir,
+            model['path']
+        )
+    except KeyError:
+        # Original jupyter_cms implementation passes absolute path on disk
+        abs_nb_path = model
+
     # Get name of notebook from filename
     notebook_basename = os.path.basename(abs_nb_path)
     notebook_name = os.path.splitext(notebook_basename)[0]
@@ -53,7 +64,7 @@ def bundle(handler, abs_nb_path):
     # Generate the index.html file
     bundle_index(output_dir, abs_nb_path, DEFAULT_TEMPLATE_PATH)
 
-    # Include frontend files referenced via the jupyter_cms bundle mechanism
+    # Include frontend files referenced via the bundler tools mechanism
     bundle_file_references(output_dir, abs_nb_path, handler.tools)
 
     # Include static web assets (e.g., Thebe)
@@ -90,8 +101,8 @@ def bundle_index(output_path, notebook_fn, template_fn=DEFAULT_TEMPLATE_PATH, in
 
 def bundle_file_references(output_path, notebook_fn, tools):
     '''
-    Looks for files references in the notebook in the manner supported by the
-    jupyter_cms.BundlerTools. Adds those files to the output path if found.
+    Looks for files references in the notebook in the manner supported by
+    notebook.bundler.tools. Adds those files to the output path if found.
 
     :param output_path: The output path of the dashboard being assembled
     :param notebook_fn: The absolute path to the notebook file being packaged
