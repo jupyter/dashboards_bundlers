@@ -18,10 +18,10 @@ See https://github.com/jupyter-incubator/dashboards/wiki for an overview of the 
 
 ## What It Gives You
 
-* *File &rarr; Download as &rarr; Jupyter Dashboards Server bundle (.zip)* menu item to download the current notebook and its associated assets for manual deployment on a [Jupyter Dashboards](https://github.com/jupyter-incubator/dashboards_server) server.
-* *File &rarr; Deploy as &rarr; Dashboard on Jupyter Dashboards Server* menu item to deploy the current notebook and its associated assets as a dashboard on a target [Jupyter Dashboards](https://github.com/jupyter-incubator/dashboards_server) server.
-* *File &rarr; Download as &rarr; PHP Dashboard bundle (.zip)* menu item to download the current notebook as a PHP application using [Thebe](https://github.com/oreillymedia/thebe) that you can deploy and configure.
-* *File &rarr; Deploy as &rarr; Local dashboard* menu item to deploy the current notebook as a [Thebe](https://github.com/oreillymedia/thebe) application within the same Jupyter Notebook server instance.
+* *File &rarr; Download as &rarr; Jupyter Dashboards Server bundle (.zip)* - menu item to download the current notebook and its associated assets for manual deployment on a [Jupyter Dashboards](https://github.com/jupyter-incubator/dashboards_server) server.
+* *File &rarr; Deploy as &rarr; Dashboard on Jupyter Dashboards Server* - menu item to deploy the current notebook and its associated assets as a dashboard on a target [Jupyter Dashboards](https://github.com/jupyter-incubator/dashboards_server) server.
+* *File &rarr; Download as &rarr; PHP Dashboard bundle (.zip)* - [DEPRECATED] menu item to download the current notebook as a PHP application using [Thebe](https://github.com/oreillymedia/thebe) that you can deploy and configure.
+* *File &rarr; Deploy as &rarr; Local dashboard* - [DEPRECATED] menu item to deploy the current notebook as a [Thebe](https://github.com/oreillymedia/thebe) application within the same Jupyter Notebook server instance.
 
 ## Prerequisites
 
