@@ -207,6 +207,8 @@ def create_index_html(path, env_vars, fmt, cwd, template_fn):
     if env_vars is None:
         env_vars = {}
     env_vars['PATH'] = os.environ['PATH']
+    if os.name == 'nt' and 'SystemRoot' in os.environ:
+        env_vars['SystemRoot'] = os.environ['SystemRoot']
 
     # Always search for templates in the default template path as well as the
     # directory containing the provided template
