@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.1 (2016-09-09)
+
+* Fix SystemRoot env var on Windows
+* Fix missing license in package
+
 ## 0.8.0 (2016-06-16)
 
 * Use link attribute from dashboards server to redirect after deployment if available
