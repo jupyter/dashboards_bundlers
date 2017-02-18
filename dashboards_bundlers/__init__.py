@@ -1,7 +1,7 @@
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 
-def _jupyter_bundler_paths():
+def _jupyter_bundlerextension_paths():
     '''API for notebook bundler installation on notebook 4.2'''
     return [{
             'name': 'dashboards_local_deploy',
@@ -27,3 +27,6 @@ def _jupyter_bundler_paths():
             'module_name': 'dashboards_bundlers.server_download',
             'group': 'download'
         }]
+
+# For backward compatibility with jupyter_cms implementation
+_jupyter_bundler_paths = _jupyter_bundlerextension_paths

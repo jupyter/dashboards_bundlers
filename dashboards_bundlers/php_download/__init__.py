@@ -85,11 +85,22 @@ using `cf set-env`, the app must be restaged using `cf restage <appname>` to upd
 its environment.
 '''
 
-def bundle(handler, abs_nb_path):
+def bundle(handler, model):
     '''
     Bundles a notebook as a PHP dashboard application and downloads it as a 
     zip file for deployment elsewhere.
     '''
+    try:
+        # Noteook implementation passes ContentManager models. This bundler
+        # only works with local files anyway.
+        abs_nb_path = os.path.join(
+            handler.settings['contents_manager'].root_dir,
+            model['path']
+        )
+    except KeyError:
+        # Original jupyter_cms implementation passes absolute path on disk
+        abs_nb_path = model
+    
     # Get name of notebook from filename
     notebook_basename = os.path.basename(abs_nb_path)
     notebook_name = os.path.splitext(notebook_basename)[0]

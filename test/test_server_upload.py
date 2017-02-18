@@ -58,6 +58,9 @@ class MockRequest(object):
 
 class MockHandler(object):
     def __init__(self, host='notebook-server:8888', protocol='http'):
+        self.settings = {
+            'base_url' : '/'
+        }
         self.request = MockRequest(host, protocol)
         self.last_redirect = None
         self.tools = jupyter_cms.bundler.BundlerTools()
