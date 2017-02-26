@@ -2,16 +2,17 @@
 # Distributed under the terms of the Modified BSD License.
 
 import os
-import requests
 import shutil
 import tempfile
 from notebook.utils import url_path_join
-from ..server_upload import make_upload_bundle
+from .server_upload import make_upload_bundle
+
 
 def bundle(handler, model):
     '''
-    Downloads a notebook, either by itself, or within a zip file with associated 
-    data and widget files, for manual deployment to a Jupyter Dashboard Server.
+    Downloads a notebook, either by itself, or within a zip file with
+    associated data and widget files, for manual deployment to a Jupyter
+    Dashboard Server.
     '''
     try:
         # Noteook implementation passes ContentManager models. This bundler
@@ -32,11 +33,11 @@ def bundle(handler, model):
     tmp_dir = tempfile.mkdtemp()
     try:
         output_dir = os.path.join(tmp_dir, notebook_name)
-        # Reuse the same logic we would use to send a zip file or notebook 
+        # Reuse the same logic we would use to send a zip file or notebook
         # file to a dashboard server, but send it back to the web browser
         # not to another server
         bundle_path = make_upload_bundle(abs_nb_path, output_dir, handler.tools)
-            
+
         if bundle_path == abs_nb_path:
             # Send the notebook alone: it has no associated resources
             handler.set_header('Content-Disposition',
@@ -51,7 +52,7 @@ def bundle(handler, model):
         with open(bundle_path, 'rb') as bundle_file:
             handler.write(bundle_file.read())
         handler.finish()
-        
+
     finally:
         # We read and send synchronously, so we can clean up safely after finish
         shutil.rmtree(tmp_dir, True)
