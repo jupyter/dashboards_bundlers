@@ -67,10 +67,16 @@ class MockRequest(object):
         self.protocol = protocol
 
 
+class MockContentsManager(object):
+    def __init__(self):
+        self.root_dir = '.'
+
+
 class MockHandler(object):
     def __init__(self, host='notebook-server:8888', protocol='http'):
         self.settings = {
-            'base_url': '/'
+            'base_url': '/',
+            'contents_manager': MockContentsManager()
         }
         self.request = MockRequest(host, protocol)
         self.last_redirect = None
@@ -92,13 +98,13 @@ class TestServerUpload(unittest.TestCase):
         '''Should error if no server URL is set.'''
         handler = MockHandler('fake-host:8000', 'http')
         self.assertRaises(web.HTTPError, converter.bundle, handler,
-                          'test/resources/no_imports.ipynb')
+                          {'path': 'test/resources/no_imports.ipynb'})
 
     def test_upload_notebook(self):
         '''Should POST the notebook and redirect to the dashboard server.'''
         os.environ['DASHBOARD_SERVER_URL'] = 'http://dashboard-server'
         handler = MockHandler()
-        converter.bundle(handler, 'test/resources/no_imports.ipynb')
+        converter.bundle(handler, {'path': 'test/resources/no_imports.ipynb'})
 
         args = converter.requests.post.args
         kwargs = converter.requests.post.kwargs
@@ -116,7 +122,7 @@ class TestServerUpload(unittest.TestCase):
         os.environ['DASHBOARD_SERVER_URL'] = 'http://dashboard-server'
         handler = MockHandler()
         converter.requests.post = MockZipPost(200)
-        converter.bundle(handler, 'test/resources/some.ipynb')
+        converter.bundle(handler, {'path': 'test/resources/some.ipynb'})
 
         args = converter.requests.post.args
         kwargs = converter.requests.post.kwargs
@@ -133,7 +139,7 @@ class TestServerUpload(unittest.TestCase):
         os.environ['DASHBOARD_SERVER_URL'] = 'http://dashboard-server'
         os.environ['DASHBOARD_SERVER_AUTH_TOKEN'] = 'fake-token'
         handler = MockHandler()
-        converter.bundle(handler, 'test/resources/no_imports.ipynb')
+        converter.bundle(handler, {'path': 'test/resources/no_imports.ipynb'})
 
         kwargs = converter.requests.post.kwargs
         self.assertEqual(kwargs['headers'],
@@ -143,7 +149,7 @@ class TestServerUpload(unittest.TestCase):
         '''Should build the server URL from the request Host header.'''
         os.environ['DASHBOARD_SERVER_URL'] = '{protocol}://{hostname}:8889'
         handler = MockHandler('notebook-server:8888', 'https')
-        converter.bundle(handler, 'test/resources/no_imports.ipynb')
+        converter.bundle(handler, {'path': 'test/resources/no_imports.ipynb'})
 
         args = converter.requests.post.args
         self.assertEqual(args[0],
@@ -156,7 +162,7 @@ class TestServerUpload(unittest.TestCase):
         os.environ['DASHBOARD_SERVER_URL'] = '{protocol}://{hostname}:8889'
         os.environ['DASHBOARD_REDIRECT_URL'] = 'http://{hostname}:3000'
         handler = MockHandler('notebook-server:8888', 'https')
-        converter.bundle(handler, 'test/resources/no_imports.ipynb')
+        converter.bundle(handler, {'path': 'test/resources/no_imports.ipynb'})
 
         args = converter.requests.post.args
         self.assertEqual(args[0],
@@ -168,7 +174,7 @@ class TestServerUpload(unittest.TestCase):
         '''Should verify SSL certificate by default.'''
         handler = MockHandler()
         os.environ['DASHBOARD_SERVER_URL'] = '{protocol}://{hostname}:8889'
-        converter.bundle(handler, 'test/resources/no_imports.ipynb')
+        converter.bundle(handler, {'path': 'test/resources/no_imports.ipynb'})
         kwargs = converter.requests.post.kwargs
         self.assertEqual(kwargs['verify'], True)
 
@@ -177,7 +183,7 @@ class TestServerUpload(unittest.TestCase):
         os.environ['DASHBOARD_SERVER_NO_SSL_VERIFY'] = 'yes'
         os.environ['DASHBOARD_SERVER_URL'] = '{protocol}://{hostname}:8889'
         handler = MockHandler()
-        converter.bundle(handler, 'test/resources/no_imports.ipynb')
+        converter.bundle(handler, {'path': 'test/resources/no_imports.ipynb'})
         kwargs = converter.requests.post.kwargs
         self.assertEqual(kwargs['verify'], False)
 

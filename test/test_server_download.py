@@ -10,10 +10,16 @@ import dashboards_bundlers.server_download as converter
 import notebook.bundler.tools
 
 
+class MockContentsManager(object):
+    def __init__(self):
+        self.root_dir = '.'
+
+
 class MockHandler(object):
     def __init__(self, notebook_dir):
         self.settings = {
-            'base_url': '/'
+            'base_url': '/',
+            'contents_manager': MockContentsManager()
         }
         self.headers = {}
         self.request = type('HTTPRequest', (object,), {
@@ -44,7 +50,7 @@ class TestServerDownload(unittest.TestCase):
     def test_bundle_ipynb(self):
         '''Should initialize an ipynb file download.'''
         handler = MockHandler(self.tmp)
-        converter.bundle(handler, 'test/resources/no_imports.ipynb')
+        converter.bundle(handler, {'path': 'test/resources/no_imports.ipynb'})
 
         output_dir = pjoin(self.tmp, 'no_imports')
         self.assertFalse(isdir(output_dir),
@@ -60,7 +66,7 @@ class TestServerDownload(unittest.TestCase):
     def test_bundle_zip(self):
         '''Should bundle and initiate a zip file download.'''
         handler = MockHandler(self.tmp)
-        converter.bundle(handler, 'test/resources/some.ipynb')
+        converter.bundle(handler, {'path': 'test/resources/some.ipynb'})
 
         output_dir = pjoin(self.tmp, 'some')
         self.assertFalse(isdir(output_dir),
