@@ -4,7 +4,6 @@
 import os
 import shutil
 import tempfile
-from notebook.utils import url_path_join
 from .server_upload import make_upload_bundle
 
 
@@ -14,16 +13,12 @@ def bundle(handler, model):
     associated data and widget files, for manual deployment to a Jupyter
     Dashboard Server.
     '''
-    try:
-        # Noteook implementation passes ContentManager models. This bundler
-        # only works with local files anyway.
-        abs_nb_path = os.path.join(
-            handler.settings['contents_manager'].root_dir,
-            model['path']
-        )
-    except KeyError:
-        # Original jupyter_cms implementation passes absolute path on disk
-        abs_nb_path = model
+    # Noteook implementation passes ContentManager models. This bundler
+    # only works with local files anyway.
+    abs_nb_path = os.path.join(
+        handler.settings['contents_manager'].root_dir,
+        model['path']
+    )
 
     # Get name of notebook from filename
     notebook_basename = os.path.basename(abs_nb_path)

@@ -16,6 +16,3 @@ def _jupyter_bundlerextension_paths():
                 'module_name': 'dashboards_bundlers.server_download',
                 'group': 'download'
             }]
-
-# For backward compatibility with jupyter_cms implementation
-_jupyter_bundler_paths = _jupyter_bundlerextension_paths

@@ -18,7 +18,7 @@ setup_args = dict(
     author='Jupyter Development Team',
     author_email='jupyter@googlegroups.com',
     description='Plugins for jupyter_cms to deploy and download notebooks as dashboard apps',
-    long_description = '''
+    long_description='''
     This package adds a *Deploy as* and *Download as* menu items for bundling
 notebooks created using jupyter_dashboards as standalone web applications.
 
@@ -28,21 +28,17 @@ for more information.
     url='https://github.com/jupyter-incubator/dashboards_bundlers',
     version=VERSION_NS['__version__'],
     license='BSD',
-    platforms=['Jupyter Notebook 4.0.x', 'Jupyter Notebook 4.1.x', 'Jupyter Notebook 4.2.x'],
+    platforms=['Jupyter Notebook 5.x'],
     packages=[
         'dashboards_bundlers',
-        'dashboards_bundlers.local_deploy',
-        'dashboards_bundlers.php_download',
-        'dashboards_bundlers.server_upload',
-        'dashboards_bundlers.server_download'
     ],
     include_package_data=True,
     scripts=[
         'scripts/jupyter-dashboards_bundlers'
     ],
     install_requires=[
-        'jupyter_cms>=0.5.0',
-        'requests>=2.7,<3.0'
+        'requests>=2.7',
+        'notebook>=5.0'
     ],
     classifiers=[
         'Intended Audience :: Developers',
@@ -53,7 +49,8 @@ for more information.
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5'
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6'
     ]
 )
 

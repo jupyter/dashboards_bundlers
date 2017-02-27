@@ -30,16 +30,12 @@ def bundle(handler, model):
     Uploads a notebook to a Jupyter Dashboard Server, either by itself, or
     within a zip file with associated data and widget files
     '''
-    try:
-        # Noteook implementation passes ContentManager models. This bundler
-        # only works with local files anyway.
-        abs_nb_path = os.path.join(
-            handler.settings['contents_manager'].root_dir,
-            model['path']
-        )
-    except KeyError:
-        # Original jupyter_cms implementation passes absolute path on disk
-        abs_nb_path = model
+    # Noteook implementation passes ContentManager models. This
+    # bundler only works with local files anyway.
+    abs_nb_path = os.path.join(
+        handler.settings['contents_manager'].root_dir,
+        model['path']
+    )
 
     # Get name of notebook from filename
     notebook_basename = os.path.basename(abs_nb_path)
@@ -160,7 +156,8 @@ def make_upload_bundle(abs_nb_path, staging_dir, tools):
     if len(os.listdir(staging_dir)) == 1:
         return abs_nb_path
 
-    zip_file = shutil.make_archive(staging_dir, format='zip', root_dir=staging_dir, base_dir='.')
+    zip_file = shutil.make_archive(staging_dir, format='zip',
+                                   root_dir=staging_dir, base_dir='.')
     return zip_file
 
 
@@ -195,8 +192,8 @@ def send_file(file_path, dashboard_name, handler):
             if token:
                 headers['Authorization'] = 'token {}'.format(token)
             result = requests.post(upload_url, files={'file': file_content},
-                headers=headers, timeout=60, 
-                verify=not skip_ssl_verification())
+                                   headers=headers, timeout=60, verify=not
+                                   skip_ssl_verification())
             if result.status_code >= 400:
                 raise web.HTTPError(result.status_code)
 
@@ -206,7 +203,7 @@ def send_file(file_path, dashboard_name, handler):
             redirect_link = res_body['link']
         else:
             # Compute redirect link using environment variables
-            # First try redirect URL as it might be different from 
+            # First try redirect URL as it might be different from
             # internal upload URL
             redirect_server = os.getenv('DASHBOARD_REDIRECT_URL')
             if redirect_server:
