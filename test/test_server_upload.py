@@ -202,7 +202,7 @@ class TestBundleWidgets(unittest.TestCase):
     def setUpClass(cls):
         for d in (DECL_WIDGETS_DIR, DECL_CORE_DIR, DECL_VIZ_DIR, BOWER_COMPONENT_DIR):
             try:
-                os.makedirs(DECL_WIDGETS_JS_DIR)
+                os.makedirs(d)
             except OSError as ex:
                 if ex.errno != errno.EEXIST:
                     raise
