@@ -4,14 +4,9 @@ python:
     - 3.3
     - 3.4
     - 3.5
-install:
-    - pip install "notebook==4.2" requests jupyter_cms jupyter_dashboards
-before_script:
-    - mkdir -p /home/travis/.jupyter/nbconfig
-    - jupyter notebook --generate-config
-    - jupyter cms quick-setup --sys-prefix
-    - jupyter dashboards quick-setup --sys-prefix
-script:
+    - 3.6
+
+cript:
     - python setup.py sdist
     - pip install --no-use-wheel --no-deps dist/*.tar.gz
     - python -B -m unittest discover -s test
@@ -20,4 +15,3 @@ notifications:
     email:
         on_success: change
         on_failure: always
-    slack: cloudet:rMfRKhvsbZuCIRZpTct3kBI4
