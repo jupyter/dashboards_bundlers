@@ -6,7 +6,9 @@ python:
     - 3.5
     - 3.6
 
-cript:
+script:
+    - pip install pip -U
+    - pip install setuptools -U
     - python setup.py sdist
     - pip install --no-use-wheel --no-deps dist/*.tar.gz
     - python -B -m unittest discover -s test
