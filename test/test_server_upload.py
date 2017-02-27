@@ -200,7 +200,8 @@ BOWER_COMPONENT_DIR = pjoin(jupyter_data_dir(),
 class TestBundleWidgets(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        for d in (DECL_WIDGETS_DIR, DECL_CORE_DIR, DECL_VIZ_DIR, BOWER_COMPONENT_DIR):
+        for d in (DECL_WIDGETS_DIR, DECL_WIDGETS_JS_DIR, DECL_CORE_DIR,
+                  DECL_VIZ_DIR, BOWER_COMPONENT_DIR):
             try:
                 os.makedirs(d)
             except OSError as ex:
