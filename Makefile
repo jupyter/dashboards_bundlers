@@ -25,7 +25,7 @@ env: ## Make a dev environment
 		--file requirements.txt \
 # Need to force notebook prerelease until 5.0 is out
 	@$(SA) $(ENV) && \
-		pip install --pre notebook && \
+		pip install -U --pre notebook && \
 		pip install -e . && \
 		jupyter bundlerextension enable --sys-prefix --py dashboards_bundlers
 
