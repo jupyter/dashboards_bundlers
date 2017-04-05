@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.0 (2017-04-04)
+
+* Remove deprecated bundlers
+* Update to work with bundler API in notebook>=5.0.0
+* Update to install against notebook 5.0.0
+
 ## 0.8.1 (2016-09-09)
 
 * Fix SystemRoot env var on Windows
