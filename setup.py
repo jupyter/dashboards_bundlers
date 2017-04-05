@@ -38,7 +38,7 @@ for more information.
     ],
     install_requires=[
         'requests>=2.7',
-        'notebook'  # >=5.0
+        'notebook>=5.0'
     ],
     classifiers=[
         'Intended Audience :: Developers',
