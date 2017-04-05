@@ -9,7 +9,7 @@ python:
 before_install:
     - pip install pip -U
     - pip install setuptools -U
-    - pip install -U --pre notebook # until 5.0 release
+    - pip install -U notebook
 
 script:
     - pip install -e .
