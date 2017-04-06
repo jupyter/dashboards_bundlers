@@ -2,7 +2,6 @@
 # Distributed under the terms of the Modified BSD License.
 
 import os
-import sys
 from setuptools import setup
 
 # Get location of this file at runtime
@@ -33,9 +32,6 @@ for more information.
         'dashboards_bundlers',
     ],
     include_package_data=True,
-    scripts=[
-        'scripts/jupyter-dashboards_bundlers'
-    ],
     install_requires=[
         'requests>=2.7',
         'notebook>=5.0'
@@ -53,16 +49,6 @@ for more information.
         'Programming Language :: Python :: 3.6'
     ]
 )
-
-if 'setuptools' in sys.modules:
-    # setupstools turns entrypoint scripts into executables on windows
-    setup_args['entry_points'] = {
-        'console_scripts': [
-            'jupyter-dashboards_bundlers = dashboards_bundlers.extensionapp:main'
-        ]
-    }
-    # Don't bother installing the .py scripts if if we're using entrypoints
-    setup_args.pop('scripts', None)
 
 if __name__ == '__main__':
     setup(**setup_args)
