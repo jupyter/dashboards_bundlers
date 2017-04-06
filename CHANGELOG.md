@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.1 (2017-04-05)
+
+* Remove leftover setuptools script entrypoint
+
 ## 0.9.0 (2017-04-04)
 
 * Remove deprecated bundlers
