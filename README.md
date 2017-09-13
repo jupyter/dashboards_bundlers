@@ -1,6 +1,10 @@
 [![PyPI version](https://badge.fury.io/py/jupyter_dashboards_bundlers.svg)](https://badge.fury.io/py/jupyter_dashboards_bundlers) [![Google Group](https://img.shields.io/badge/-Google%20Group-lightgrey.svg)](https://groups.google.com/forum/#!forum/jupyter)
 
-# Jupyter Dashboards Bundlers
+# [RETIRED] Jupyter Dashboards Bundlers
+
+**This project has been retired.** See the [proposal to move the project to jupyter-attic](https://github.com/jupyter/enhancement-proposals/blob/master/jupyter-dashboards-deployment-attic/jupyter-dashboards-deployment-attic.md), [announcement of the proposal on the mailing list](https://groups.google.com/forum/#!topic/jupyter/icEtCVLniRc), and [Steering Council vote on the proposal PR](https://github.com/jupyter/enhancement-proposals/pull/22) for more information.
+
+----
 
 The dashbaords bundler extension is an add-on for Jupyter Notebook. It takes a
 notebook with layout information from the [dashboard layout
